@@ -70,13 +70,18 @@ class TableParser {
 
       final name = cell('name');
       if (name.isEmpty) continue;
+      String? orNull(String key) {
+        final v = cell(key);
+        return v.isEmpty ? null : v;
+      }
+
       result.add(Exercise(
         name: name,
-        sets: _toInt(cell('sets')) ?? 3,
-        reps: _toInt(cell('reps')) ?? 10,
-        weight: _toDouble(cell('weight')),
-        restSeconds: _toInt(cell('rest')),
-        note: cell('note').isEmpty ? null : cell('note'),
+        sets: cell('sets'),
+        reps: cell('reps'),
+        weight: orNull('weight'),
+        rest: orNull('rest'),
+        note: orNull('note'),
       ));
     }
     return result;
@@ -116,17 +121,5 @@ class TableParser {
     }
     map['name'] ??= 0;
     return map;
-  }
-
-  static int? _toInt(String s) {
-    if (s.isEmpty) return null;
-    final m = RegExp(r'\d+').firstMatch(s);
-    return m == null ? null : int.tryParse(m.group(0)!);
-  }
-
-  static double? _toDouble(String s) {
-    if (s.isEmpty) return null;
-    final m = RegExp(r'\d+(?:[.,]\d+)?').firstMatch(s.replaceAll(',', '.'));
-    return m == null ? null : double.tryParse(m.group(0)!);
   }
 }

@@ -12,8 +12,8 @@ class ExcelExporter {
     'Egzersiz',
     'Set',
     'Tekrar',
-    'Ağırlık (kg)',
-    'Dinlenme (sn)',
+    'Ağırlık',
+    'Dinlenme',
     'Not',
   ];
 
@@ -56,16 +56,10 @@ class ExcelExporter {
     for (final ex in program.exercises) {
       sheet.appendRow([
         TextCellValue(ex.name),
-        IntCellValue(ex.sets),
-        IntCellValue(ex.reps),
-        if (ex.weight != null)
-          DoubleCellValue(ex.weight!)
-        else
-          TextCellValue(''),
-        if (ex.restSeconds != null)
-          IntCellValue(ex.restSeconds!)
-        else
-          TextCellValue(''),
+        TextCellValue(ex.sets),
+        TextCellValue(ex.reps),
+        TextCellValue(ex.weight ?? ''),
+        TextCellValue(ex.rest ?? ''),
         TextCellValue(ex.note ?? ''),
       ]);
     }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import '../models/day_program.dart';
@@ -21,7 +22,23 @@ class StorageService {
     final service = StorageService._();
     service._programsBox = await Hive.openBox<String>(_programsBoxName);
     service._weeklyBox = await Hive.openBox<String>(_weeklyBoxName);
+    // First run with no data: seed with the user's existing programs.
+    if (service._programsBox.isEmpty) {
+      await service._seedFromAsset();
+    }
     return service;
+  }
+
+  Future<void> _seedFromAsset() async {
+    try {
+      final raw = await rootBundle.loadString('assets/seed_programs.json');
+      final list = (jsonDecode(raw) as List)
+          .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      if (list.isNotEmpty) await savePrograms(list);
+    } catch (_) {
+      // Seeding is best-effort; ignore if the asset is missing/invalid.
+    }
   }
 
   // --- Daily programs ---

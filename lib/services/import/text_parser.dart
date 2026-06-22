@@ -41,38 +41,38 @@ class TextParser {
 
     line = line.replaceFirst(_leadingMarker, '');
 
-    int sets = 3;
-    int reps = 10;
-    double? weight;
-    int? rest;
+    String sets = '';
+    String reps = '';
+    String? weight;
+    String? rest;
 
     final sr = _setsReps.firstMatch(line);
     if (sr != null) {
-      sets = int.tryParse(sr.group(1)!) ?? sets;
-      reps = int.tryParse(sr.group(2)!) ?? reps;
+      sets = sr.group(1)!;
+      reps = sr.group(2)!;
       line = line.replaceRange(sr.start, sr.end, ' ');
     }
 
     final wKg = _weightKg.firstMatch(line);
     if (wKg != null) {
-      weight = double.tryParse(wKg.group(1)!.replaceAll(',', '.'));
+      weight = '${wKg.group(1)!.replaceAll(',', '.')} kg';
       line = line.replaceRange(wKg.start, wKg.end, ' ');
     } else {
       final wAt = _weightAt.firstMatch(line);
       if (wAt != null) {
-        weight = double.tryParse(wAt.group(1)!.replaceAll(',', '.'));
+        weight = '${wAt.group(1)!.replaceAll(',', '.')} kg';
         line = line.replaceRange(wAt.start, wAt.end, ' ');
       }
     }
 
     final rMin = _restMin.firstMatch(line);
     if (rMin != null) {
-      rest = (int.tryParse(rMin.group(1)!) ?? 0) * 60;
+      rest = '${rMin.group(1)} dk';
       line = line.replaceRange(rMin.start, rMin.end, ' ');
     } else {
       final rSec = _restSec.firstMatch(line);
       if (rSec != null) {
-        rest = int.tryParse(rSec.group(1)!);
+        rest = '${rSec.group(1)} sn';
         line = line.replaceRange(rSec.start, rSec.end, ' ');
       }
     }
@@ -89,7 +89,7 @@ class TextParser {
       sets: sets,
       reps: reps,
       weight: weight,
-      restSeconds: rest,
+      rest: rest,
     );
   }
 }

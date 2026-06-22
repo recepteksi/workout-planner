@@ -4,7 +4,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../../models/day_program.dart';
-import '../../models/exercise.dart';
 import '../../models/weekly_plan.dart';
 
 /// Generates programs as PDF and downloads/prints them on the web.
@@ -69,10 +68,10 @@ class PdfExporter {
       rows.add([
         '${i + 1}',
         ex.name,
-        '${ex.sets}',
-        '${ex.reps}',
-        ex.weight == null ? '-' : '${formatNum(ex.weight!)} kg',
-        ex.restSeconds == null ? '-' : '${ex.restSeconds} sn',
+        ex.sets.isEmpty ? '-' : ex.sets,
+        ex.reps.isEmpty ? '-' : ex.reps,
+        (ex.weight ?? '').isEmpty ? '-' : ex.weight!,
+        (ex.rest ?? '').isEmpty ? '-' : ex.rest!,
         ex.note ?? '',
       ]);
     }

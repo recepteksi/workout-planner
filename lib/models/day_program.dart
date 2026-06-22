@@ -49,7 +49,7 @@ class DayProgram {
                 sets: e.sets,
                 reps: e.reps,
                 weight: e.weight,
-                restSeconds: e.restSeconds,
+                rest: e.rest,
                 note: e.note,
               ))
           .toList(),

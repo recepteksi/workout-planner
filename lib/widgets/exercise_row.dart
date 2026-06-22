@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../models/exercise.dart';
 
@@ -35,10 +34,10 @@ class _ExerciseRowState extends State<ExerciseRow> {
     super.initState();
     final e = widget.exercise;
     _name = TextEditingController(text: e.name);
-    _sets = TextEditingController(text: '${e.sets}');
-    _reps = TextEditingController(text: '${e.reps}');
-    _weight = TextEditingController(text: e.weight == null ? '' : formatNum(e.weight!));
-    _rest = TextEditingController(text: e.restSeconds?.toString() ?? '');
+    _sets = TextEditingController(text: e.sets);
+    _reps = TextEditingController(text: e.reps);
+    _weight = TextEditingController(text: e.weight ?? '');
+    _rest = TextEditingController(text: e.rest ?? '');
     _note = TextEditingController(text: e.note ?? '');
   }
 
@@ -54,19 +53,19 @@ class _ExerciseRowState extends State<ExerciseRow> {
   }
 
   void _emit() {
-    final weightText = _weight.text.trim().replaceAll(',', '.');
-    final restText = _rest.text.trim();
-    final noteText = _note.text.trim();
+    final w = _weight.text.trim();
+    final r = _rest.text.trim();
+    final n = _note.text.trim();
     widget.onChanged(widget.exercise.copyWith(
       name: _name.text.trim(),
-      sets: int.tryParse(_sets.text.trim()) ?? widget.exercise.sets,
-      reps: int.tryParse(_reps.text.trim()) ?? widget.exercise.reps,
-      weight: weightText.isEmpty ? null : double.tryParse(weightText),
-      restSeconds: restText.isEmpty ? null : int.tryParse(restText),
-      note: noteText.isEmpty ? null : noteText,
-      clearWeight: weightText.isEmpty,
-      clearRest: restText.isEmpty,
-      clearNote: noteText.isEmpty,
+      sets: _sets.text.trim(),
+      reps: _reps.text.trim(),
+      weight: w.isEmpty ? null : w,
+      rest: r.isEmpty ? null : r,
+      note: n.isEmpty ? null : n,
+      clearWeight: w.isEmpty,
+      clearRest: r.isEmpty,
+      clearNote: n.isEmpty,
     ));
   }
 
@@ -107,18 +106,11 @@ class _ExerciseRowState extends State<ExerciseRow> {
               spacing: 10,
               runSpacing: 8,
               children: [
-                _numField(_sets, 'Set', 64),
-                _numField(_reps, 'Tekrar', 72),
-                _numField(_weight, 'Ağırlık (kg)', 110, allowDecimal: true),
-                _numField(_rest, 'Dinlenme (sn)', 120),
-                SizedBox(
-                  width: 220,
-                  child: TextField(
-                    controller: _note,
-                    decoration: const InputDecoration(labelText: 'Not'),
-                    onChanged: (_) => _emit(),
-                  ),
-                ),
+                _field(_sets, 'Set', 80),
+                _field(_reps, 'Tekrar', 110),
+                _field(_weight, 'Ağırlık', 110),
+                _field(_rest, 'Dinlenme', 120),
+                _field(_note, 'Bölüm / Not', 200),
               ],
             ),
           ],
@@ -127,18 +119,12 @@ class _ExerciseRowState extends State<ExerciseRow> {
     );
   }
 
-  Widget _numField(TextEditingController c, String label, double width,
-      {bool allowDecimal = false}) {
+  Widget _field(TextEditingController c, String label, double width) {
     return SizedBox(
       width: width,
       child: TextField(
         controller: c,
         decoration: InputDecoration(labelText: label),
-        keyboardType: TextInputType.numberWithOptions(decimal: allowDecimal),
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(
-              allowDecimal ? RegExp(r'[0-9.,]') : RegExp(r'[0-9]')),
-        ],
         onChanged: (_) => _emit(),
       ),
     );

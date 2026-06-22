@@ -1,0 +1,144 @@
+[
+  {
+    "name": "İtiş",
+    "exercises": [
+      {"name": "Bird dog", "note": "Karın"},
+      {"name": "Crunch", "note": "Karın"},
+      {"name": "Bicycle crunch", "note": "Karın"},
+      {"name": "Heel touch", "note": "Karın"},
+      {"name": "Lying leg raises", "note": "Karın"},
+      {"name": "Shoulder taps", "note": "Karın"},
+      {"name": "Russian twist", "note": "Karın"},
+      {"name": "Leg scissors", "note": "Karın"},
+
+      {"name": "Bird dog", "sets": "2", "reps": "20", "note": "Core"},
+      {"name": "Pallof press cable", "sets": "1", "reps": "15", "note": "Core"},
+
+      {"name": "Standing bottom up kb press", "sets": "2", "reps": "12", "note": "Direnç"},
+      {"name": "Weighted push up", "sets": "3", "reps": "-", "rest": "1-2 dk", "note": "Direnç"},
+      {"name": "Barbell flat bench press", "sets": "1+4", "reps": "8-15", "rest": "2-3 dk", "note": "Direnç"},
+      {"name": "Incline chest press machine", "sets": "3", "reps": "8-15", "note": "Direnç"},
+      {"name": "Barbell seated overhead press", "sets": "1+3", "reps": "15", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Standing cable fly & machine", "sets": "4", "reps": "8-15", "rest": "1-1.5 dk", "note": "Direnç"},
+      {"name": "Dumbbell lateral raise + Scaption raise", "sets": "4", "reps": "15-20", "note": "Direnç · superset"},
+      {"name": "Weighted parallel bar dips", "sets": "3", "reps": "-", "note": "Direnç"},
+      {"name": "Triceps rope pushdown + Overhead rope triceps", "sets": "4", "reps": "8-15", "note": "Direnç · superset"},
+
+      {"name": "Crosstrainer", "reps": "15 dk", "note": "Kardiyo"},
+
+      {"name": "Pectoralis major stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Deltoid stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Triceps stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  },
+  {
+    "name": "Çekiş",
+    "exercises": [
+      {"name": "Bird dog", "note": "Karın"},
+      {"name": "Crunch", "note": "Karın"},
+      {"name": "Bicycle crunch", "note": "Karın"},
+      {"name": "Heel touch", "note": "Karın"},
+      {"name": "Lying leg raises", "note": "Karın"},
+      {"name": "Shoulder taps", "note": "Karın"},
+      {"name": "Russian twist", "note": "Karın"},
+      {"name": "Leg scissors", "note": "Karın"},
+
+      {"name": "Alternated instep rotation", "sets": "-", "reps": "-", "note": "Isınma"},
+      {"name": "Cable internal rotation", "sets": "1", "reps": "12", "note": "Isınma"},
+      {"name": "Cable external rotation", "sets": "1", "reps": "12", "note": "Isınma"},
+
+      {"name": "Bird dog", "sets": "2", "reps": "20", "note": "Core"},
+      {"name": "Plank", "sets": "-", "reps": "-", "note": "Core"},
+      {"name": "Side plank", "note": "Core"},
+
+      {"name": "Wide grip barfix", "sets": "2", "reps": "-", "note": "Direnç"},
+      {"name": "Weighted supinated grip barfix", "sets": "2", "reps": "-", "rest": "2-3 dk", "note": "Direnç"},
+      {"name": "Pendlay row", "sets": "2+3", "reps": "15", "rest": "2 dk", "note": "Direnç"},
+      {"name": "İso lateral row machine wide grip", "sets": "4", "reps": "8-15", "rest": "1-2 dk", "note": "Direnç"},
+      {"name": "Long handle lat pullover", "sets": "3", "reps": "8-15", "rest": "1-2 dk", "note": "Direnç"},
+      {"name": "Cable Y raise + Face pull", "sets": "3", "reps": "15", "note": "Direnç · superset"},
+      {"name": "Ez bar curl", "sets": "3", "reps": "8-15", "note": "Direnç"},
+      {"name": "Dumbbell alternating hammer curl", "sets": "3", "reps": "8-15", "note": "Direnç"},
+
+      {"name": "Rowing", "reps": "4000m", "note": "Kardiyo"},
+
+      {"name": "Biceps stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Latissimus dorsi stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  },
+  {
+    "name": "Bacak",
+    "exercises": [
+      {"name": "Bird dog", "note": "Karın"},
+      {"name": "Crunch", "note": "Karın"},
+      {"name": "Bicycle crunch", "note": "Karın"},
+      {"name": "Heel touch", "note": "Karın"},
+      {"name": "Lying leg raises", "note": "Karın"},
+      {"name": "Shoulder taps", "note": "Karın"},
+      {"name": "Russian twist", "note": "Karın"},
+      {"name": "Leg scissors", "note": "Karın"},
+
+      {"name": "Standing hip rotation", "sets": "1", "reps": "20", "note": "Isınma"},
+      {"name": "Hamstring dynamic stretch", "sets": "1", "reps": "20", "note": "Isınma"},
+      {"name": "Quadriceps dynamic stretch", "sets": "1", "reps": "20", "note": "Isınma"},
+      {"name": "Alternated instep rotation", "sets": "1", "reps": "20", "note": "Isınma"},
+
+      {"name": "Bird dog", "sets": "1", "reps": "20", "note": "Core"},
+      {"name": "Plank", "sets": "-", "reps": "-", "note": "Core"},
+      {"name": "Side plank", "sets": "-", "reps": "-", "note": "Core"},
+      {"name": "Hip bridge", "sets": "2", "reps": "15", "note": "Core"},
+
+      {"name": "Back squat", "sets": "2+3", "reps": "8-15", "rest": "2-3 dk", "note": "Direnç"},
+      {"name": "Split squat", "sets": "3", "reps": "8-15", "rest": "1-2 dk", "note": "Direnç"},
+      {"name": "Conventional deadlift", "sets": "3", "reps": "8-15", "note": "Direnç"},
+      {"name": "Kb weighted step up", "sets": "2", "reps": "8-15", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Back lunge", "sets": "2", "reps": "8-15", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Alternating side lunge", "sets": "2", "reps": "8-15", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Seated leg extension", "sets": "3", "reps": "15", "note": "Direnç"},
+      {"name": "Standing calf raise", "sets": "3", "reps": "8-15", "note": "Direnç"},
+      {"name": "Hip ADD machine", "sets": "2", "reps": "15", "note": "Direnç"},
+
+      {"name": "Hamstring stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Quadriceps stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Gluteus maximus stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Adductor stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Gastrocnemius stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  },
+  {
+    "name": "Ekstra",
+    "exercises": [
+      {"name": "Bird dog", "note": "Karın"},
+      {"name": "Crunch", "note": "Karın"},
+      {"name": "Bicycle crunch", "note": "Karın"},
+      {"name": "Heel touch", "note": "Karın"},
+      {"name": "Lying leg raises", "note": "Karın"},
+      {"name": "Shoulder taps", "note": "Karın"},
+      {"name": "Russian twist", "note": "Karın"},
+      {"name": "Leg scissors", "note": "Karın"},
+
+      {"name": "Great world stretch", "sets": "-", "reps": "20", "note": "Isınma"},
+
+      {"name": "Combo crunch", "sets": "2", "reps": "35 sn", "rest": "30 sn", "note": "Core · tur"},
+      {"name": "Russian twist", "sets": "2", "reps": "35 sn", "rest": "30 sn", "note": "Core · tur"},
+      {"name": "Knee tucks", "sets": "2", "reps": "35 sn", "rest": "30 sn", "note": "Core · tur"},
+      {"name": "Pallof press sağ ve sol", "sets": "1", "reps": "15", "note": "Core"},
+
+      {"name": "Trx wide grip row", "sets": "3", "reps": "15", "note": "Direnç"},
+      {"name": "Body weight dips", "sets": "3", "reps": "-", "rest": "2-3 dk", "note": "Direnç"},
+      {"name": "İso lateral shoulder press machine", "sets": "3", "reps": "8-10", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Lateral raise", "sets": "3", "reps": "12-15", "rest": "1-2 dk", "note": "Direnç"},
+      {"name": "Cable triceps pushdown flat bar", "sets": "3", "reps": "12-15", "rest": "1-2 dk", "note": "Direnç"},
+      {"name": "Alternated dumbbell curl", "sets": "3", "reps": "20", "note": "Direnç"},
+      {"name": "Dumbbell hammer curl", "sets": "3", "reps": "8-12", "note": "Direnç"},
+
+      {"name": "Rowing", "reps": "3000m", "note": "Kardiyo"},
+
+      {"name": "Biceps stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Latissimus dorsi stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Pectoralis major stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Deltoid stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Triceps stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  }
+]
