@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../models/day_program.dart';
 import '../providers/app_providers.dart';
 import '../services/export/excel_exporter.dart';
 import '../services/export/pdf_exporter.dart';
 
+/// A program shown as a rich card in the library grid. Draggable to the week.
 class ProgramCard extends ConsumerWidget {
   final DayProgram program;
   final VoidCallback onEdit;
+  final VoidCallback onAddToWeek;
 
-  const ProgramCard({super.key, required this.program, required this.onEdit});
+  const ProgramCard({
+    super.key,
+    required this.program,
+    required this.onEdit,
+    required this.onAddToWeek,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final df = DateFormat('dd.MM.yyyy');
+    final scheme = Theme.of(context).colorScheme;
     final notifier = ref.read(programsProvider.notifier);
     final messenger = ScaffoldMessenger.of(context);
+    final preview = program.exercises.take(3).map((e) => e.name).join(', ');
 
     Future<void> guarded(Future<void> Function() action, String okMsg) async {
       try {
@@ -29,83 +36,153 @@ class ProgramCard extends ConsumerWidget {
     }
 
     return Card(
-      child: ListTile(
+      margin: EdgeInsets.zero,
+      child: InkWell(
         onTap: onEdit,
-        leading: CircleAvatar(child: Text('${program.exercises.length}')),
-        title: Text(program.name,
-            style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(
-            '${program.exercises.length} egzersiz · ${df.format(program.updatedAt)}'),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) async {
-            switch (value) {
-              case 'edit':
-                onEdit();
-                break;
-              case 'duplicate':
-                notifier.duplicate(program.id);
-                messenger.showSnackBar(
-                    const SnackBar(content: Text('Program çoğaltıldı')));
-                break;
-              case 'archive':
-                notifier.setArchived(program.id, !program.archived);
-                break;
-              case 'pdf':
-                await guarded(() => PdfExporter.exportDayProgram(program),
-                    'PDF hazırlandı');
-                break;
-              case 'excel':
-                await guarded(() => ExcelExporter.exportDayProgram(program),
-                    'Excel indirildi');
-                break;
-              case 'delete':
-                final ok = await _confirmDelete(context, program.name);
-                if (ok) {
-                  notifier.delete(program.id);
-                  messenger.showSnackBar(
-                      const SnackBar(content: Text('Program silindi')));
-                }
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-                value: 'edit',
-                child: ListTile(
-                    leading: Icon(Icons.edit), title: Text('Düzenle'))),
-            const PopupMenuItem(
-                value: 'duplicate',
-                child: ListTile(
-                    leading: Icon(Icons.copy),
-                    title: Text('Çoğalt / Yeniden oluştur'))),
-            PopupMenuItem(
-                value: 'archive',
-                child: ListTile(
-                    leading: Icon(program.archived
-                        ? Icons.unarchive
-                        : Icons.archive),
-                    title: Text(
-                        program.archived ? 'Arşivden çıkar' : 'Arşivle'))),
-            const PopupMenuDivider(),
-            const PopupMenuItem(
-                value: 'pdf',
-                child: ListTile(
-                    leading: Icon(Icons.picture_as_pdf),
-                    title: Text('PDF dışa aktar'))),
-            const PopupMenuItem(
-                value: 'excel',
-                child: ListTile(
-                    leading: Icon(Icons.table_chart),
-                    title: Text('Excel dışa aktar'))),
-            const PopupMenuDivider(),
-            const PopupMenuItem(
-                value: 'delete',
-                child: ListTile(
-                    leading: Icon(Icons.delete, color: Colors.red),
-                    title: Text('Sil'))),
-          ],
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(14, 12, 6, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.drag_indicator,
+                      size: 18, color: scheme.onSurfaceVariant),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      program.name.isEmpty ? 'Adsız Program' : program.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 32,
+                    width: 32,
+                    child: _menu(context, notifier, messenger, guarded),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 2),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: scheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text('${program.exercises.length} egzersiz',
+                    style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: scheme.onSecondaryContainer)),
+              ),
+              const SizedBox(height: 6),
+              Expanded(
+                child: Text(
+                  preview.isEmpty ? 'Egzersiz yok' : preview,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(fontSize: 12.5, color: scheme.onSurfaceVariant),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: FilledButton.tonalIcon(
+                  style: FilledButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
+                  ),
+                  onPressed: onAddToWeek,
+                  icon: const Icon(Icons.add, size: 16),
+                  label: const Text('Haftaya ekle'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _menu(
+    BuildContext context,
+    ProgramsNotifier notifier,
+    ScaffoldMessengerState messenger,
+    Future<void> Function(Future<void> Function(), String) guarded,
+  ) {
+    return PopupMenuButton<String>(
+      padding: EdgeInsets.zero,
+      icon: const Icon(Icons.more_vert, size: 18),
+      onSelected: (value) async {
+        switch (value) {
+          case 'edit':
+            onEdit();
+            break;
+          case 'duplicate':
+            notifier.duplicate(program.id);
+            messenger.showSnackBar(
+                const SnackBar(content: Text('Program çoğaltıldı')));
+            break;
+          case 'archive':
+            notifier.setArchived(program.id, !program.archived);
+            break;
+          case 'pdf':
+            await guarded(() => PdfExporter.exportDayProgram(program),
+                'PDF hazırlandı');
+            break;
+          case 'excel':
+            await guarded(() => ExcelExporter.exportDayProgram(program),
+                'Excel indirildi');
+            break;
+          case 'delete':
+            final ok = await _confirmDelete(context, program.name);
+            if (ok) {
+              notifier.delete(program.id);
+              messenger.showSnackBar(
+                  const SnackBar(content: Text('Program silindi')));
+            }
+            break;
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+            value: 'edit',
+            child: ListTile(leading: Icon(Icons.edit), title: Text('Düzenle'))),
+        const PopupMenuItem(
+            value: 'duplicate',
+            child: ListTile(
+                leading: Icon(Icons.copy),
+                title: Text('Çoğalt / Yeniden oluştur'))),
+        PopupMenuItem(
+            value: 'archive',
+            child: ListTile(
+                leading: Icon(
+                    program.archived ? Icons.unarchive : Icons.archive),
+                title: Text(program.archived ? 'Arşivden çıkar' : 'Arşivle'))),
+        const PopupMenuDivider(),
+        const PopupMenuItem(
+            value: 'pdf',
+            child: ListTile(
+                leading: Icon(Icons.picture_as_pdf),
+                title: Text('PDF dışa aktar'))),
+        const PopupMenuItem(
+            value: 'excel',
+            child: ListTile(
+                leading: Icon(Icons.table_chart),
+                title: Text('Excel dışa aktar'))),
+        const PopupMenuDivider(),
+        const PopupMenuItem(
+            value: 'delete',
+            child: ListTile(
+                leading: Icon(Icons.delete, color: Colors.red),
+                title: Text('Sil'))),
+      ],
     );
   }
 

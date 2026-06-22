@@ -71,74 +71,93 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('İçe Aktar')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Dosyadan içe aktar',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  const Text(
-                      'CSV, Excel (.xlsx/.xls), PDF veya TXT dosyası seçin. '
-                      'Çıkarılan egzersizler düzenleme için önizlemede açılır.'),
-                  const SizedBox(height: 12),
-                  FilledButton.icon(
-                    onPressed: _busy ? null : _pickFile,
-                    icon: _busy
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child:
-                                CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Icons.upload_file),
-                    label: const Text('Dosya Seç'),
-                  ),
-                ],
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 720),
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              _sectionCard(
+                icon: Icons.upload_file,
+                title: 'Dosyadan içe aktar',
+                description:
+                    'CSV, Excel (.xlsx/.xls), PDF veya TXT dosyası seçin. '
+                    'Çıkarılan egzersizler düzenleme için önizlemede açılır.',
+                child: FilledButton.icon(
+                  onPressed: _busy ? null : _pickFile,
+                  icon: _busy
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2))
+                      : const Icon(Icons.upload_file),
+                  label: const Text('Dosya Seç'),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Metinden içe aktar',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  const Text(
-                      'Programı aşağıya yapıştırın. Her satır bir egzersiz olarak '
-                      'okunur. Örnek: "Bench Press 4x10 60kg 90sn".'),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _textController,
-                    minLines: 6,
-                    maxLines: 14,
-                    decoration: const InputDecoration(
-                      hintText:
-                          'Squat 5x5 100kg\nBench Press 4x8 60kg 90sn\nBarfiks 4x10',
-                      border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              _sectionCard(
+                icon: Icons.text_fields,
+                title: 'Metinden içe aktar',
+                description:
+                    'Programı aşağıya yapıştırın. Her satır bir egzersiz olarak '
+                    'okunur. Örnek: "Bench Press 4x10 60kg 90sn".',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: _textController,
+                      minLines: 6,
+                      maxLines: 14,
+                      decoration: const InputDecoration(
+                        hintText:
+                            'Squat 5x5 100kg\nBench Press 4x8 60kg 90sn\nBarfiks 4x10',
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  FilledButton.icon(
-                    onPressed: _parseText,
-                    icon: const Icon(Icons.auto_fix_high),
-                    label: const Text('Ayrıştır ve Önizle'),
-                  ),
-                ],
+                    const SizedBox(height: 12),
+                    FilledButton.icon(
+                      onPressed: _parseText,
+                      icon: const Icon(Icons.auto_fix_high),
+                      label: const Text('Ayrıştır ve Önizle'),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionCard({
+    required IconData icon,
+    required String title,
+    required String description,
+    required Widget child,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: scheme.primary, size: 22),
+                const SizedBox(width: 10),
+                Text(title,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w700)),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(description,
+                style: TextStyle(color: scheme.onSurfaceVariant)),
+            const SizedBox(height: 14),
+            child,
+          ],
+        ),
       ),
     );
   }

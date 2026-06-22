@@ -5,6 +5,7 @@ import '../models/day_program.dart';
 import '../models/exercise.dart';
 import '../providers/app_providers.dart';
 import '../widgets/exercise_row.dart';
+import '../widgets/page_container.dart';
 
 /// Daily program create/edit screen.
 /// If [program] is null, a new program is created.
@@ -74,56 +75,65 @@ class _DayProgramEditorScreenState
       appBar: AppBar(
         title: Text(isNew ? 'Yeni Program' : 'Programı Düzenle'),
         actions: [
-          TextButton.icon(
-            onPressed: _save,
-            icon: const Icon(Icons.check, color: Colors.white),
-            label: const Text('Kaydet',
-                style: TextStyle(color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: FilledButton.icon(
+              onPressed: _save,
+              icon: const Icon(Icons.check, size: 18),
+              label: const Text('Kaydet'),
+            ),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: TextField(
-              controller: _name,
-              decoration: const InputDecoration(
-                labelText: 'Program adı',
-                hintText: 'ör. İtiş Günü, Bacak Günü',
-              ),
-            ),
-          ),
-          Expanded(
-            child: _exercises.isEmpty
-                ? const Center(
-                    child: Text('Henüz egzersiz yok.\nAlttaki + ile ekleyin.',
-                        textAlign: TextAlign.center))
-                : ReorderableListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 4),
-                    itemCount: _exercises.length,
-                    onReorder: (oldIndex, newIndex) {
-                      setState(() {
-                        if (newIndex > oldIndex) newIndex -= 1;
-                        final item = _exercises.removeAt(oldIndex);
-                        _exercises.insert(newIndex, item);
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      final ex = _exercises[index];
-                      return ExerciseRow(
-                        key: ValueKey(ex.id),
-                        index: index,
-                        exercise: ex,
-                        onChanged: (updated) => _exercises[index] = updated,
-                        onDelete: () =>
-                            setState(() => _exercises.removeAt(index)),
-                      );
-                    },
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 880),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: TextField(
+                  controller: _name,
+                  decoration: const InputDecoration(
+                    labelText: 'Program adı',
+                    hintText: 'ör. İtiş Günü, Bacak Günü',
                   ),
+                ),
+              ),
+              Expanded(
+                child: _exercises.isEmpty
+                    ? const EmptyState(
+                        icon: Icons.add_task,
+                        title: 'Henüz egzersiz yok',
+                        subtitle: 'Alttaki "Egzersiz Ekle" ile başla.',
+                      )
+                    : ReorderableListView.builder(
+                        padding: const EdgeInsets.fromLTRB(12, 4, 12, 96),
+                        itemCount: _exercises.length,
+                        onReorder: (oldIndex, newIndex) {
+                          setState(() {
+                            if (newIndex > oldIndex) newIndex -= 1;
+                            final item = _exercises.removeAt(oldIndex);
+                            _exercises.insert(newIndex, item);
+                          });
+                        },
+                        itemBuilder: (context, index) {
+                          final ex = _exercises[index];
+                          return ExerciseRow(
+                            key: ValueKey(ex.id),
+                            index: index,
+                            exercise: ex,
+                            onChanged: (updated) =>
+                                _exercises[index] = updated,
+                            onDelete: () =>
+                                setState(() => _exercises.removeAt(index)),
+                          );
+                        },
+                      ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addExercise,
