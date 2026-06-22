@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -10,9 +11,24 @@ import '../../models/weekly_plan.dart';
 class PdfExporter {
   static final _df = DateFormat('dd.MM.yyyy');
 
+  /// Cached PDF theme using a bundled Unicode TTF font. The default PDF font
+  /// (Helvetica) cannot render Turkish glyphs (ş, ğ, ı, İ …), which crashed
+  /// the app on export. The font is bundled (not fetched at runtime) so export
+  /// works offline and deterministically.
+  static pw.ThemeData? _theme;
+
+  static Future<pw.ThemeData> _loadTheme() async {
+    if (_theme != null) return _theme!;
+    final regular = pw.Font.ttf(
+        await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'));
+    final bold =
+        pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Bold.ttf'));
+    return _theme = pw.ThemeData.withFont(base: regular, bold: bold);
+  }
+
   /// Download a single daily program as PDF.
   static Future<void> exportDayProgram(DayProgram program) async {
-    final doc = pw.Document();
+    final doc = pw.Document(theme: await _loadTheme());
     doc.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
@@ -31,7 +47,7 @@ class PdfExporter {
     final entries = [...plan.entries]
       ..sort((a, b) => a.weekday.compareTo(b.weekday));
 
-    final doc = pw.Document();
+    final doc = pw.Document(theme: await _loadTheme());
     doc.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,

@@ -187,7 +187,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               padding: const EdgeInsets.only(bottom: 96, top: 4),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 320,
-                mainAxisExtent: 168,
+                mainAxisExtent: 208,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),

@@ -1,6 +1,6 @@
 [
   {
-    "name": "İtiş",
+    "name": "Karın",
     "exercises": [
       {"name": "Bird dog", "note": "Karın"},
       {"name": "Crunch", "note": "Karın"},
@@ -9,8 +9,12 @@
       {"name": "Lying leg raises", "note": "Karın"},
       {"name": "Shoulder taps", "note": "Karın"},
       {"name": "Russian twist", "note": "Karın"},
-      {"name": "Leg scissors", "note": "Karın"},
-
+      {"name": "Leg scissors", "note": "Karın"}
+    ]
+  },
+  {
+    "name": "İtiş",
+    "exercises": [
       {"name": "Bird dog", "sets": "2", "reps": "20", "note": "Core"},
       {"name": "Pallof press cable", "sets": "1", "reps": "15", "note": "Core"},
 
@@ -34,15 +38,6 @@
   {
     "name": "Çekiş",
     "exercises": [
-      {"name": "Bird dog", "note": "Karın"},
-      {"name": "Crunch", "note": "Karın"},
-      {"name": "Bicycle crunch", "note": "Karın"},
-      {"name": "Heel touch", "note": "Karın"},
-      {"name": "Lying leg raises", "note": "Karın"},
-      {"name": "Shoulder taps", "note": "Karın"},
-      {"name": "Russian twist", "note": "Karın"},
-      {"name": "Leg scissors", "note": "Karın"},
-
       {"name": "Alternated instep rotation", "sets": "-", "reps": "-", "note": "Isınma"},
       {"name": "Cable internal rotation", "sets": "1", "reps": "12", "note": "Isınma"},
       {"name": "Cable external rotation", "sets": "1", "reps": "12", "note": "Isınma"},
@@ -69,15 +64,6 @@
   {
     "name": "Bacak",
     "exercises": [
-      {"name": "Bird dog", "note": "Karın"},
-      {"name": "Crunch", "note": "Karın"},
-      {"name": "Bicycle crunch", "note": "Karın"},
-      {"name": "Heel touch", "note": "Karın"},
-      {"name": "Lying leg raises", "note": "Karın"},
-      {"name": "Shoulder taps", "note": "Karın"},
-      {"name": "Russian twist", "note": "Karın"},
-      {"name": "Leg scissors", "note": "Karın"},
-
       {"name": "Standing hip rotation", "sets": "1", "reps": "20", "note": "Isınma"},
       {"name": "Hamstring dynamic stretch", "sets": "1", "reps": "20", "note": "Isınma"},
       {"name": "Quadriceps dynamic stretch", "sets": "1", "reps": "20", "note": "Isınma"},
@@ -108,15 +94,6 @@
   {
     "name": "Ekstra",
     "exercises": [
-      {"name": "Bird dog", "note": "Karın"},
-      {"name": "Crunch", "note": "Karın"},
-      {"name": "Bicycle crunch", "note": "Karın"},
-      {"name": "Heel touch", "note": "Karın"},
-      {"name": "Lying leg raises", "note": "Karın"},
-      {"name": "Shoulder taps", "note": "Karın"},
-      {"name": "Russian twist", "note": "Karın"},
-      {"name": "Leg scissors", "note": "Karın"},
-
       {"name": "Great world stretch", "sets": "-", "reps": "20", "note": "Isınma"},
 
       {"name": "Combo crunch", "sets": "2", "reps": "35 sn", "rest": "30 sn", "note": "Core · tur"},

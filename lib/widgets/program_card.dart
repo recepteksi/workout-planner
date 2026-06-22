@@ -24,7 +24,7 @@ class ProgramCard extends ConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
     final notifier = ref.read(programsProvider.notifier);
     final messenger = ScaffoldMessenger.of(context);
-    final preview = program.exercises.take(3).map((e) => e.name).join(', ');
+    final sections = program.sectionCounts;
 
     Future<void> guarded(Future<void> Function() action, String okMsg) async {
       try {
@@ -80,15 +80,22 @@ class ProgramCard extends ConsumerWidget {
                         fontWeight: FontWeight.w600,
                         color: scheme.onSecondaryContainer)),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
               Expanded(
-                child: Text(
-                  preview.isEmpty ? 'Egzersiz yok' : preview,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style:
-                      TextStyle(fontSize: 12.5, color: scheme.onSurfaceVariant),
-                ),
+                child: sections.isEmpty
+                    ? Text(
+                        'Egzersiz yok',
+                        style: TextStyle(
+                            fontSize: 12.5, color: scheme.onSurfaceVariant),
+                      )
+                    : Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          for (final entry in sections.entries)
+                            _sectionChip(entry.key, entry.value),
+                        ],
+                      ),
               ),
               Align(
                 alignment: Alignment.centerRight,
@@ -106,6 +113,33 @@ class ProgramCard extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// A distinct, readable color per workout section.
+  static const _sectionColors = <String, Color>{
+    'Karın': Color(0xFFD81B60),
+    'Isınma': Color(0xFFEF6C00),
+    'Core': Color(0xFF8E24AA),
+    'Direnç': Color(0xFF1565C0),
+    'Kardiyo': Color(0xFF2E7D32),
+    'Esneme': Color(0xFF00838F),
+  };
+
+  Widget _sectionChip(String section, int count) {
+    final color = _sectionColors[section] ?? const Color(0xFF546E7A);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+      ),
+      child: Text(
+        '$section · $count',
+        style: TextStyle(
+            fontSize: 11.5, fontWeight: FontWeight.w600, color: color),
       ),
     );
   }

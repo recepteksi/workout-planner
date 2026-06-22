@@ -72,6 +72,16 @@ class Exercise {
     return s.isEmpty ? null : s;
   }
 
+  /// The section tag, i.e. the text before any " · " qualifier in [note].
+  /// e.g. note "Direnç · superset" -> "Direnç", note "Karın" -> "Karın".
+  String? get section {
+    final n = note?.trim();
+    if (n == null || n.isEmpty) return null;
+    final idx = n.indexOf('·');
+    final s = (idx >= 0 ? n.substring(0, idx) : n).trim();
+    return s.isEmpty ? null : s;
+  }
+
   /// Short summary for lists/exports: "4 x 8-15 · 60kg · 2 dk".
   String get summary {
     final p = <String>[];

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import '../models/day_program.dart';
+import '../models/exercise.dart';
 import '../models/weekly_plan.dart';
 
 /// Hive-based local storage. Uses IndexedDB on the web.
@@ -11,9 +12,12 @@ import '../models/weekly_plan.dart';
 class StorageService {
   static const _programsBoxName = 'programs';
   static const _weeklyBoxName = 'weekly_plans';
+  static const _metaBoxName = 'meta';
+  static const _absTag = 'Karın';
 
   late final Box<String> _programsBox;
   late final Box<String> _weeklyBox;
+  late final Box<String> _metaBox;
 
   StorageService._();
 
@@ -22,11 +26,60 @@ class StorageService {
     final service = StorageService._();
     service._programsBox = await Hive.openBox<String>(_programsBoxName);
     service._weeklyBox = await Hive.openBox<String>(_weeklyBoxName);
+    service._metaBox = await Hive.openBox<String>(_metaBoxName);
     // First run with no data: seed with the user's existing programs.
     if (service._programsBox.isEmpty) {
       await service._seedFromAsset();
     }
+    await service._migrateAbsToOwnProgram();
     return service;
+  }
+
+  /// One-time migration: pull the repeated "Karın" exercises out of every
+  /// program and into a single standalone "Karın" program. Already-split data
+  /// (fresh seeds) has no such exercises, so this is a no-op there.
+  Future<void> _migrateAbsToOwnProgram() async {
+    if (_metaBox.get('absSplitDone') == 'true') return;
+
+    final programs = loadPrograms();
+    // Collect a representative abs exercise per name (they repeat identically).
+    final abs = <String, Exercise>{};
+    for (final p in programs) {
+      for (final e in p.exercises) {
+        if (e.section == _absTag) {
+          abs.putIfAbsent(e.name.toLowerCase(), () => e);
+        }
+      }
+    }
+
+    if (abs.isNotEmpty) {
+      final next = <DayProgram>[];
+      final hasAbsProgram =
+          programs.any((p) => p.name.trim() == _absTag);
+      if (!hasAbsProgram) {
+        next.add(DayProgram(
+          name: _absTag,
+          exercises: abs.values
+              .map((e) => Exercise(
+                    name: e.name,
+                    sets: e.sets,
+                    reps: e.reps,
+                    weight: e.weight,
+                    rest: e.rest,
+                    note: e.note,
+                  ))
+              .toList(),
+        ));
+      }
+      for (final p in programs) {
+        final stripped =
+            p.exercises.where((e) => e.section != _absTag).toList();
+        next.add(p.copyWith(exercises: stripped));
+      }
+      await savePrograms(next);
+    }
+
+    await _metaBox.put('absSplitDone', 'true');
   }
 
   Future<void> _seedFromAsset() async {

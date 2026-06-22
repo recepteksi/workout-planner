@@ -23,6 +23,34 @@ class DayProgram {
         createdAt = createdAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
+  /// Canonical order sections are shown in across the app.
+  static const sectionOrder = [
+    'Karın',
+    'Isınma',
+    'Core',
+    'Direnç',
+    'Kardiyo',
+    'Esneme',
+  ];
+
+  /// Exercise counts grouped by section, sorted by [sectionOrder]. Unknown
+  /// sections fall under "Diğer" and are listed last.
+  Map<String, int> get sectionCounts {
+    final counts = <String, int>{};
+    for (final e in exercises) {
+      final s = e.section ?? 'Diğer';
+      counts[s] = (counts[s] ?? 0) + 1;
+    }
+    int rank(String s) {
+      final i = sectionOrder.indexOf(s);
+      return i < 0 ? sectionOrder.length : i;
+    }
+
+    final entries = counts.entries.toList()
+      ..sort((a, b) => rank(a.key).compareTo(rank(b.key)));
+    return {for (final e in entries) e.key: e.value};
+  }
+
   DayProgram copyWith({
     String? name,
     List<Exercise>? exercises,

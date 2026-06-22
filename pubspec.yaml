@@ -71,6 +71,8 @@ flutter:
 
   assets:
     - assets/seed_programs.json
+    - assets/fonts/NotoSans-Regular.ttf
+    - assets/fonts/NotoSans-Bold.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
