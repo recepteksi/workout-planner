@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Web (open in my Chrome) :8080",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "web-server",
+      "args": ["--web-port", "8080"]
+    },
+    {
+      "name": "Web (separate debug Chrome) :8080",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "chrome",
+      "args": ["--web-port", "8080"]
+    },
+    {
+      "name": "Web (server) profile",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "web-server",
+      "flutterMode": "profile",
+      "args": ["--web-port", "8080"]
+    },
+    {
+      "name": "macOS (desktop)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "macos"
+    }
+  ]
+}

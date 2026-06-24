@@ -32,6 +32,7 @@ class StorageService {
       await service._seedFromAsset();
     }
     await service._migrateAbsToOwnProgram();
+    await service._seedV2Programs();
     return service;
   }
 
@@ -80,6 +81,31 @@ class StorageService {
     }
 
     await _metaBox.put('absSplitDone', 'true');
+  }
+
+  /// One-time injection of the refreshed "Yeni" programs (güç + yağ yakım
+  /// odaklı varyasyonlar). Adds any v2 program whose name isn't already
+  /// present, so existing users get them without losing their old programs.
+  Future<void> _seedV2Programs() async {
+    if (_metaBox.get('v2ProgramsSeeded') == 'true') return;
+    try {
+      final raw = await rootBundle.loadString('assets/seed_programs_v2.json');
+      final incoming = (jsonDecode(raw) as List)
+          .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      final existing = loadPrograms();
+      final existingNames =
+          existing.map((p) => p.name.trim().toLowerCase()).toSet();
+      final toAdd = incoming
+          .where((p) => !existingNames.contains(p.name.trim().toLowerCase()))
+          .toList();
+      if (toAdd.isNotEmpty) {
+        await savePrograms([...existing, ...toAdd]);
+      }
+    } catch (_) {
+      // Best-effort; ignore if the asset is missing/invalid.
+    }
+    await _metaBox.put('v2ProgramsSeeded', 'true');
   }
 
   Future<void> _seedFromAsset() async {

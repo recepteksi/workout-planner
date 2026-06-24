@@ -3,12 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/day_program.dart';
 import '../models/exercise.dart';
+import '../models/exercise_template.dart';
 import '../providers/app_providers.dart';
+import '../widgets/exercise_library_panel.dart';
 import '../widgets/exercise_row.dart';
 import '../widgets/page_container.dart';
 
 /// Daily program create/edit screen.
 /// If [program] is null, a new program is created.
+///
+/// Exercises are added by dragging (or tapping) cards from the bundled
+/// exercise library, which prefills sensible default sets/reps.
 class DayProgramEditorScreen extends ConsumerStatefulWidget {
   final DayProgram? program;
   const DayProgramEditorScreen({super.key, this.program});
@@ -43,8 +48,34 @@ class _DayProgramEditorScreenState
     super.dispose();
   }
 
-  void _addExercise() {
+  void _addBlank() {
     setState(() => _exercises.add(Exercise(name: '')));
+  }
+
+  void _addTemplate(ExerciseTemplate t) {
+    setState(() => _exercises.add(t.toExercise()));
+  }
+
+  void _openLibrarySheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) => FractionallySizedBox(
+        heightFactor: 0.9,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: ExerciseLibraryPanel(
+            onPick: (t) {
+              _addTemplate(t);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  duration: const Duration(milliseconds: 700),
+                  content: Text('${t.name} eklendi')));
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   void _save() {
@@ -85,61 +116,169 @@ class _DayProgramEditorScreenState
           ),
         ],
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 880),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: TextField(
-                  controller: _name,
-                  decoration: const InputDecoration(
-                    labelText: 'Program adı',
-                    hintText: 'ör. İtiş Günü, Bacak Günü',
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: TextField(
+                controller: _name,
+                decoration: const InputDecoration(
+                  labelText: 'Program adı',
+                  hintText: 'ör. İtiş Günü, Bacak Günü',
                 ),
               ),
-              Expanded(
-                child: _exercises.isEmpty
-                    ? const EmptyState(
-                        icon: Icons.add_task,
-                        title: 'Henüz egzersiz yok',
-                        subtitle: 'Alttaki "Egzersiz Ekle" ile başla.',
-                      )
-                    : ReorderableListView.builder(
-                        padding: const EdgeInsets.fromLTRB(12, 4, 12, 96),
-                        itemCount: _exercises.length,
-                        onReorder: (oldIndex, newIndex) {
-                          setState(() {
-                            if (newIndex > oldIndex) newIndex -= 1;
-                            final item = _exercises.removeAt(oldIndex);
-                            _exercises.insert(newIndex, item);
-                          });
-                        },
-                        itemBuilder: (context, index) {
-                          final ex = _exercises[index];
-                          return ExerciseRow(
-                            key: ValueKey(ex.id),
-                            index: index,
-                            exercise: ex,
-                            onChanged: (updated) =>
-                                _exercises[index] = updated,
-                            onDelete: () =>
-                                setState(() => _exercises.removeAt(index)),
-                          );
-                        },
-                      ),
-              ),
-            ],
+            ),
           ),
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final wide = constraints.maxWidth >= 900;
+                if (wide) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: _LabeledPane(
+                            title: 'Egzersiz Kütüphanesi',
+                            icon: Icons.photo_library_outlined,
+                            child: ExerciseLibraryPanel(onPick: _addTemplate),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          flex: 4,
+                          child: _LabeledPane(
+                            title: 'Program (${_exercises.length})',
+                            icon: Icons.list_alt,
+                            child: _programList(dropTarget: true),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return _programList(dropTarget: false);
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: LayoutBuilder(
+        builder: (context, _) {
+          final wide = MediaQuery.of(context).size.width >= 900;
+          if (wide) {
+            return FloatingActionButton.extended(
+              onPressed: _addBlank,
+              icon: const Icon(Icons.add),
+              label: const Text('Boş Egzersiz'),
+            );
+          }
+          return FloatingActionButton.extended(
+            onPressed: _openLibrarySheet,
+            icon: const Icon(Icons.photo_library_outlined),
+            label: const Text('Kütüphaneden Ekle'),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _programList({required bool dropTarget}) {
+    final list = _exercises.isEmpty
+        ? EmptyState(
+            icon: Icons.add_task,
+            title: 'Henüz egzersiz yok',
+            subtitle: dropTarget
+                ? 'Soldaki kütüphaneden egzersiz kartlarını buraya sürükle.'
+                : 'Alttaki "Kütüphaneden Ekle" ile başla.',
+          )
+        : ReorderableListView.builder(
+            padding: const EdgeInsets.fromLTRB(4, 4, 4, 96),
+            itemCount: _exercises.length,
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                if (newIndex > oldIndex) newIndex -= 1;
+                final item = _exercises.removeAt(oldIndex);
+                _exercises.insert(newIndex, item);
+              });
+            },
+            itemBuilder: (context, index) {
+              final ex = _exercises[index];
+              return ExerciseRow(
+                key: ValueKey(ex.id),
+                index: index,
+                exercise: ex,
+                onChanged: (updated) => _exercises[index] = updated,
+                onDelete: () => setState(() => _exercises.removeAt(index)),
+              );
+            },
+          );
+
+    if (!dropTarget) {
+      return Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 880),
+          child: list,
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _addExercise,
-        icon: const Icon(Icons.add),
-        label: const Text('Egzersiz Ekle'),
-      ),
+      );
+    }
+
+    return DragTarget<ExerciseTemplate>(
+      onWillAcceptWithDetails: (_) => true,
+      onAcceptWithDetails: (d) => _addTemplate(d.data),
+      builder: (context, candidate, rejected) {
+        final hovering = candidate.isNotEmpty;
+        final scheme = Theme.of(context).colorScheme;
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: hovering ? scheme.primary : Colors.transparent,
+              width: 2,
+            ),
+            color: hovering
+                ? scheme.primaryContainer.withValues(alpha: 0.15)
+                : null,
+          ),
+          child: list,
+        );
+      },
+    );
+  }
+}
+
+/// A titled container for the editor's two panes.
+class _LabeledPane extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Widget child;
+
+  const _LabeledPane(
+      {required this.title, required this.icon, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 18, color: scheme.primary),
+            const SizedBox(width: 6),
+            Text(title,
+                style: const TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w700)),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Expanded(child: child),
+      ],
     );
   }
 }

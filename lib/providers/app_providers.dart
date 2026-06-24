@@ -1,8 +1,22 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/day_program.dart';
+import '../models/exercise_template.dart';
 import '../models/weekly_plan.dart';
 import '../services/storage_service.dart';
+
+/// The bundled exercise catalog (free-exercise-db), loaded once from assets.
+final exerciseLibraryProvider =
+    FutureProvider<List<ExerciseTemplate>>((ref) async {
+  final raw = await rootBundle.loadString('assets/exercise_library.json');
+  return (jsonDecode(raw) as List)
+      .map((e) =>
+          ExerciseTemplate.fromJson(Map<String, dynamic>.from(e as Map)))
+      .toList();
+});
 
 /// Overridden with the real StorageService in main.dart.
 final storageServiceProvider = Provider<StorageService>(

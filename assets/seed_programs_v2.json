@@ -1,0 +1,105 @@
+[
+  {
+    "name": "Karın · Görünür (Yeni)",
+    "exercises": [
+      {"name": "Dead bug", "sets": "2", "reps": "12", "note": "Isınma"},
+      {"name": "Cat-cow", "sets": "1", "reps": "10", "note": "Isınma"},
+
+      {"name": "Hanging leg raise", "sets": "4", "reps": "10-15", "rest": "60 sn", "note": "Core · alt karın · progresif"},
+      {"name": "Cable crunch", "sets": "4", "reps": "12-15", "rest": "60 sn", "note": "Core · ağırlıklı · progresif"},
+      {"name": "Weighted decline sit-up", "sets": "3", "reps": "12-15", "note": "Core · ağırlıklı"},
+      {"name": "Ab wheel rollout", "sets": "3", "reps": "8-12", "note": "Core"},
+      {"name": "Cable woodchopper (sağ + sol)", "sets": "3", "reps": "12", "note": "Core · oblik · superset"},
+      {"name": "Pallof press (sağ + sol)", "sets": "3", "reps": "12", "note": "Core · anti-rotasyon · superset"},
+      {"name": "Side plank", "sets": "3", "reps": "30-45 sn", "note": "Core · oblik"},
+
+      {"name": "Mountain climbers", "sets": "4", "reps": "30 sn", "rest": "30 sn", "note": "Kardiyo · HIIT tur"},
+      {"name": "Plank to push-up", "sets": "4", "reps": "30 sn", "rest": "30 sn", "note": "Kardiyo · HIIT tur"},
+      {"name": "Bisiklet / koşu sprint intervali", "reps": "8-10 dk", "note": "Kardiyo · 20sn sprint / 40sn yavaş"},
+
+      {"name": "Abdominal (cobra) stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Oblique stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  },
+  {
+    "name": "İtiş · Güç + Yağ (Yeni)",
+    "exercises": [
+      {"name": "Band pull-apart", "sets": "2", "reps": "20", "note": "Isınma"},
+      {"name": "Cable external rotation", "sets": "2", "reps": "15", "note": "Isınma · omuz sağlığı"},
+      {"name": "Push-up", "sets": "2", "reps": "15", "note": "Isınma"},
+
+      {"name": "Bird dog", "sets": "2", "reps": "20", "note": "Core"},
+      {"name": "Pallof press cable", "sets": "1", "reps": "15", "note": "Core"},
+
+      {"name": "Barbell flat bench press", "sets": "5", "reps": "3-5", "weight": "%80-87 1RM", "rest": "3 dk", "note": "Direnç · ağır güç"},
+      {"name": "Spoto / duraklı bench press", "sets": "3", "reps": "5-6", "rest": "2-3 dk", "note": "Direnç · bench varyasyon"},
+      {"name": "Incline dumbbell press", "sets": "3", "reps": "8-12", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Seated dumbbell shoulder press", "sets": "3", "reps": "8-12", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Weighted parallel bar dips", "sets": "3", "reps": "8-12", "note": "Direnç"},
+      {"name": "Cable crossover (high to low)", "sets": "3", "reps": "12-15", "note": "Direnç"},
+      {"name": "Dumbbell lateral raise + Cable lateral raise", "sets": "4", "reps": "15-20", "note": "Direnç · superset"},
+      {"name": "Overhead cable triceps + Rope pushdown", "sets": "3", "reps": "10-15", "note": "Direnç · superset"},
+
+      {"name": "Crosstrainer", "reps": "12-15 dk", "note": "Kardiyo · orta tempo"},
+      {"name": "Bisiklet sprint intervali", "reps": "6-8 dk", "note": "Kardiyo · 20sn full / 40sn yavaş"},
+
+      {"name": "Pectoralis major stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Deltoid stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Triceps stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  },
+  {
+    "name": "Çekiş · Güç + Yağ (Yeni)",
+    "exercises": [
+      {"name": "Cable internal rotation", "sets": "1", "reps": "12", "note": "Isınma"},
+      {"name": "Cable external rotation", "sets": "1", "reps": "12", "note": "Isınma"},
+      {"name": "Scapular pull-up", "sets": "2", "reps": "10", "note": "Isınma"},
+
+      {"name": "Bird dog", "sets": "2", "reps": "20", "note": "Core"},
+      {"name": "Plank", "sets": "3", "reps": "45 sn", "note": "Core"},
+
+      {"name": "Weighted pull-up", "sets": "4", "reps": "4-6", "rest": "3 dk", "note": "Direnç · ağır güç"},
+      {"name": "Pendlay row", "sets": "4", "reps": "5-8", "rest": "2-3 dk", "note": "Direnç · ağır"},
+      {"name": "Chest supported T-bar row", "sets": "3", "reps": "8-12", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Lat pulldown (neutral grip)", "sets": "3", "reps": "10-12", "note": "Direnç"},
+      {"name": "Single-arm dumbbell row", "sets": "3", "reps": "10-12", "note": "Direnç"},
+      {"name": "Cable face pull + Reverse pec deck", "sets": "3", "reps": "15-20", "note": "Direnç · arka omuz · superset"},
+      {"name": "EZ bar curl + Incline dumbbell curl", "sets": "3", "reps": "8-12", "note": "Direnç · superset"},
+      {"name": "Dumbbell hammer curl", "sets": "3", "reps": "10-12", "note": "Direnç"},
+
+      {"name": "Rowing (ergo)", "reps": "2000m", "note": "Kardiyo · orta tempo"},
+      {"name": "Rowing sprint intervali", "reps": "8 x 250m", "note": "Kardiyo · sprint / dinlen"},
+
+      {"name": "Biceps stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Latissimus dorsi stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  },
+  {
+    "name": "Bacak · Güç + Yağ (Yeni)",
+    "exercises": [
+      {"name": "Leg swings (ön-arka / yan)", "sets": "1", "reps": "20", "note": "Isınma"},
+      {"name": "Hamstring dynamic stretch", "sets": "1", "reps": "20", "note": "Isınma"},
+      {"name": "Bodyweight squat", "sets": "2", "reps": "15", "note": "Isınma"},
+
+      {"name": "Bird dog", "sets": "1", "reps": "20", "note": "Core"},
+      {"name": "Hip bridge", "sets": "2", "reps": "15", "note": "Core"},
+
+      {"name": "Back squat", "sets": "5", "reps": "3-5", "weight": "%80-87 1RM", "rest": "3 dk", "note": "Direnç · ağır güç"},
+      {"name": "Romanian deadlift", "sets": "4", "reps": "6-8", "rest": "2-3 dk", "note": "Direnç · hamstring"},
+      {"name": "Bulgarian split squat", "sets": "3", "reps": "8-12", "rest": "2 dk", "note": "Direnç"},
+      {"name": "Leg press", "sets": "3", "reps": "12-15", "note": "Direnç"},
+      {"name": "Seated leg curl + Leg extension", "sets": "3", "reps": "12-15", "note": "Direnç · superset"},
+      {"name": "Barbell hip thrust", "sets": "3", "reps": "10-12", "note": "Direnç · glute"},
+      {"name": "Standing calf raise", "sets": "4", "reps": "12-15", "note": "Direnç"},
+      {"name": "Hip ADD machine", "sets": "2", "reps": "15", "note": "Direnç"},
+
+      {"name": "Eğimli yürüyüş (incline walk)", "reps": "12-15 dk", "note": "Kardiyo · LISS"},
+
+      {"name": "Hamstring stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Quadriceps stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Gluteus maximus stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Adductor stretch", "reps": "30-45 sn", "note": "Esneme"},
+      {"name": "Gastrocnemius stretch", "reps": "30-45 sn", "note": "Esneme"}
+    ]
+  }
+]
