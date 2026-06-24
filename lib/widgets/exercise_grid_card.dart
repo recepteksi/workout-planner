@@ -48,73 +48,103 @@ class ExerciseGridCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Colored header: order badge + section tag + remove.
-            Container(
-              color: color.withValues(alpha: 0.12),
-              padding: const EdgeInsets.fromLTRB(8, 5, 2, 5),
-              child: Row(
+            // Illustration with the order badge, section tag and remove
+            // button overlaid on top.
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  CircleAvatar(
-                    radius: 11,
-                    backgroundColor: color,
-                    child: Text('${index + 1}',
-                        style: const TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                  ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      section ?? 'Diğer',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: color),
+                  ExerciseThumb(url: exercise.imageUrl),
+                  // Scrim so the overlaid controls stay legible on any image.
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.center,
+                        colors: [Color(0x66000000), Color(0x00000000)],
+                      ),
                     ),
                   ),
-                  IconButton(
-                    tooltip: 'Çıkar',
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
-                    constraints:
-                        const BoxConstraints.tightFor(width: 28, height: 28),
-                    icon: Icon(Icons.close,
-                        size: 16, color: scheme.onSurfaceVariant),
-                    onPressed: onDelete,
+                  Positioned(
+                    top: 4,
+                    left: 6,
+                    right: 2,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 11,
+                          backgroundColor: color,
+                          child: Text('${index + 1}',
+                              style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white)),
+                        ),
+                        const Spacer(),
+                        Material(
+                          color: Colors.black26,
+                          shape: const CircleBorder(),
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: onDelete,
+                            child: const Padding(
+                              padding: EdgeInsets.all(4),
+                              child: Icon(Icons.close,
+                                  size: 16, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius:
+                            const BorderRadius.only(topRight: Radius.circular(8)),
+                      ),
+                      child: Text(
+                        section ?? 'Diğer',
+                        style: const TextStyle(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            // Body: name + stat chips.
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name.isEmpty ? 'Yeni egzersiz' : name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w700,
-                        height: 1.15,
-                        color: name.isEmpty ? scheme.onSurfaceVariant : null,
-                      ),
+            // Footer: name + stat chips.
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 7, 10, 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name.isEmpty ? 'Egzersiz seç' : name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: name.isEmpty ? scheme.onSurfaceVariant : null,
                     ),
-                    const Spacer(),
-                    if (chips.isNotEmpty)
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 4,
-                        children: [for (final c in chips) _chip(c, color)],
-                      ),
+                  ),
+                  if (chips.isNotEmpty) ...[
+                    const SizedBox(height: 5),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: [for (final c in chips) _chip(c, color)],
+                    ),
                   ],
-                ),
+                ],
               ),
             ),
           ],
@@ -133,6 +163,36 @@ class ExerciseGridCard extends StatelessWidget {
       child: Text(text,
           style: TextStyle(
               fontSize: 11, fontWeight: FontWeight.w600, color: color)),
+    );
+  }
+}
+
+/// Network thumbnail for an exercise illustration with a graceful
+/// loading/error placeholder. Decodes at a small size so a grid of these
+/// doesn't exhaust memory on web (CanvasKit).
+class ExerciseThumb extends StatelessWidget {
+  final String? url;
+  const ExerciseThumb({super.key, this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final placeholder = Container(
+      color: scheme.surfaceContainerHighest,
+      alignment: Alignment.center,
+      child: Icon(Icons.fitness_center,
+          color: scheme.onSurfaceVariant.withValues(alpha: 0.5)),
+    );
+    if (url == null) return placeholder;
+    return Image.network(
+      url!,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      cacheWidth: 360,
+      gaplessPlayback: true,
+      loadingBuilder: (context, child, progress) =>
+          progress == null ? child : placeholder,
+      errorBuilder: (context, error, stack) => placeholder,
     );
   }
 }
@@ -160,7 +220,6 @@ class _ExerciseEditForm extends StatefulWidget {
 }
 
 class _ExerciseEditFormState extends State<_ExerciseEditForm> {
-  late final TextEditingController _name;
   late final TextEditingController _sets;
   late final TextEditingController _reps;
   late final TextEditingController _weight;
@@ -171,7 +230,6 @@ class _ExerciseEditFormState extends State<_ExerciseEditForm> {
   void initState() {
     super.initState();
     final e = widget.exercise;
-    _name = TextEditingController(text: e.name);
     _sets = TextEditingController(text: e.sets);
     _reps = TextEditingController(text: e.reps);
     _weight = TextEditingController(text: e.weight ?? '');
@@ -181,7 +239,6 @@ class _ExerciseEditFormState extends State<_ExerciseEditForm> {
 
   @override
   void dispose() {
-    _name.dispose();
     _sets.dispose();
     _reps.dispose();
     _weight.dispose();
@@ -214,7 +271,6 @@ class _ExerciseEditFormState extends State<_ExerciseEditForm> {
     Navigator.pop(
       context,
       widget.exercise.copyWith(
-        name: _name.text.trim(),
         sets: _sets.text.trim(),
         reps: _reps.text.trim(),
         weight: w.isEmpty ? null : w,
@@ -231,32 +287,60 @@ class _ExerciseEditFormState extends State<_ExerciseEditForm> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final current = _currentSection;
-    final accent = sectionColor(current);
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 520, maxHeight: 640),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header bar, tinted by the current section.
-          Container(
-            color: accent.withValues(alpha: 0.12),
-            padding: const EdgeInsets.fromLTRB(20, 14, 8, 14),
-            child: Row(
+          // Image banner with the (read-only) exercise name and a close
+          // button overlaid. The name comes only from the library pick.
+          SizedBox(
+            height: 132,
+            child: Stack(
+              fit: StackFit.expand,
               children: [
-                Icon(Icons.fitness_center, size: 20, color: accent),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text('Egzersizi düzenle',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                ExerciseThumb(url: widget.exercise.imageUrl),
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.center,
+                      colors: [Color(0xCC000000), Color(0x00000000)],
+                    ),
+                  ),
                 ),
-                IconButton(
-                  tooltip: 'Kapat',
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: Material(
+                    color: Colors.black38,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: () => Navigator.pop(context),
+                      child: const Padding(
+                        padding: EdgeInsets.all(6),
+                        child: Icon(Icons.close, size: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 12,
+                  child: Text(
+                    widget.exercise.name.trim().isEmpty
+                        ? 'Egzersiz'
+                        : widget.exercise.name.trim(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -268,15 +352,6 @@ class _ExerciseEditFormState extends State<_ExerciseEditForm> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextField(
-                    controller: _name,
-                    autofocus: widget.exercise.name.trim().isEmpty,
-                    decoration: const InputDecoration(
-                        labelText: 'Egzersiz', border: OutlineInputBorder()),
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) => _save(),
-                  ),
-                  const SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(child: _field(_sets, 'Set')),

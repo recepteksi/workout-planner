@@ -71,6 +71,7 @@ class ExerciseTemplate {
         sets: defaultSets,
         reps: defaultReps,
         note: section,
+        imageUrl: imageUrl,
       );
 
   /// Turkish labels for the primary muscles, for display and search.

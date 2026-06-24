@@ -11,6 +11,7 @@ class Exercise {
   final String? weight;
   final String? rest;
   final String? note; // e.g. section tag: Isınma / Core / Direnç / Esneme
+  final String? imageUrl; // illustration carried over from the library
 
   Exercise({
     String? id,
@@ -20,6 +21,7 @@ class Exercise {
     this.weight,
     this.rest,
     this.note,
+    this.imageUrl,
   }) : id = id ?? const Uuid().v4();
 
   Exercise copyWith({
@@ -29,6 +31,7 @@ class Exercise {
     String? weight,
     String? rest,
     String? note,
+    String? imageUrl,
     bool clearWeight = false,
     bool clearRest = false,
     bool clearNote = false,
@@ -41,6 +44,7 @@ class Exercise {
       weight: clearWeight ? null : (weight ?? this.weight),
       rest: clearRest ? null : (rest ?? this.rest),
       note: clearNote ? null : (note ?? this.note),
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -52,6 +56,7 @@ class Exercise {
         'weight': weight,
         'rest': rest,
         'note': note,
+        'imageUrl': imageUrl,
       };
 
   factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
@@ -63,6 +68,7 @@ class Exercise {
         // Older data stored rest as restSeconds (int).
         rest: _strOrNull(json['rest'] ?? json['restSeconds']),
         note: _strOrNull(json['note']),
+        imageUrl: _strOrNull(json['imageUrl']),
       );
 
   static String _str(dynamic v) => v == null ? '' : v.toString();

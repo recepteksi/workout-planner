@@ -48,17 +48,6 @@ class _DayProgramEditorScreenState
     super.dispose();
   }
 
-  Future<void> _addBlank() async {
-    setState(() => _exercises.add(Exercise(name: '')));
-    final index = _exercises.length - 1;
-    await _editAt(index);
-    // Drop the card again if the user dismissed it without naming it.
-    if (index < _exercises.length &&
-        _exercises[index].name.trim().isEmpty) {
-      setState(() => _exercises.removeAt(index));
-    }
-  }
-
   void _addTemplate(ExerciseTemplate t) {
     setState(() => _exercises.add(t.toExercise()));
   }
@@ -190,16 +179,12 @@ class _DayProgramEditorScreenState
           ),
         ],
       ),
+      // On wide screens the library lives in the left pane (drag to add); on
+      // narrow screens a FAB opens it as a sheet.
       floatingActionButton: LayoutBuilder(
         builder: (context, _) {
           final wide = MediaQuery.of(context).size.width >= 900;
-          if (wide) {
-            return FloatingActionButton.extended(
-              onPressed: _addBlank,
-              icon: const Icon(Icons.add),
-              label: const Text('Boş Egzersiz'),
-            );
-          }
+          if (wide) return const SizedBox.shrink();
           return FloatingActionButton.extended(
             onPressed: _openLibrarySheet,
             icon: const Icon(Icons.photo_library_outlined),
@@ -222,8 +207,8 @@ class _DayProgramEditorScreenState
         : GridView.builder(
             padding: const EdgeInsets.fromLTRB(4, 4, 4, 96),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 240,
-              mainAxisExtent: 138,
+              maxCrossAxisExtent: 200,
+              mainAxisExtent: 210,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
@@ -247,7 +232,7 @@ class _DayProgramEditorScreenState
                     data: index,
                     feedback: Material(
                       color: Colors.transparent,
-                      child: SizedBox(width: 220, height: 138, child: card),
+                      child: SizedBox(width: 190, height: 210, child: card),
                     ),
                     childWhenDragging: Opacity(opacity: 0.3, child: card),
                     child: AnimatedScale(
