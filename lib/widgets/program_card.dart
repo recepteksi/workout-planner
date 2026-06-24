@@ -5,6 +5,7 @@ import '../models/day_program.dart';
 import '../providers/app_providers.dart';
 import '../services/export/excel_exporter.dart';
 import '../services/export/pdf_exporter.dart';
+import 'section_colors.dart';
 
 /// A program shown as a rich card in the library grid. Draggable to the week.
 class ProgramCard extends ConsumerWidget {
@@ -117,18 +118,8 @@ class ProgramCard extends ConsumerWidget {
     );
   }
 
-  /// A distinct, readable color per workout section.
-  static const _sectionColors = <String, Color>{
-    'Karın': Color(0xFFD81B60),
-    'Isınma': Color(0xFFEF6C00),
-    'Core': Color(0xFF8E24AA),
-    'Direnç': Color(0xFF1565C0),
-    'Kardiyo': Color(0xFF2E7D32),
-    'Esneme': Color(0xFF00838F),
-  };
-
   Widget _sectionChip(String section, int count) {
-    final color = _sectionColors[section] ?? const Color(0xFF546E7A);
+    final color = sectionColor(section);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
