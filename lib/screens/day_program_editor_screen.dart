@@ -64,7 +64,7 @@ class _DayProgramEditorScreenState
   }
 
   Future<void> _editAt(int index) async {
-    final updated = await showExerciseEditSheet(context, _exercises[index]);
+    final updated = await showExerciseEditDialog(context, _exercises[index]);
     if (updated != null && index < _exercises.length) {
       setState(() => _exercises[index] = updated);
     }

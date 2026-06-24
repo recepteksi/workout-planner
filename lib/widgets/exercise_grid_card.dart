@@ -137,30 +137,29 @@ class ExerciseGridCard extends StatelessWidget {
   }
 }
 
-/// Opens the edit sheet for [exercise]; resolves to the edited copy, or null
-/// if the user dismissed it without saving.
-Future<Exercise?> showExerciseEditSheet(
+/// Opens the centered edit dialog for [exercise]; resolves to the edited copy,
+/// or null if the user dismissed it without saving. A dialog (rather than a
+/// bottom sheet) suits the web/desktop target this app ships to.
+Future<Exercise?> showExerciseEditDialog(
     BuildContext context, Exercise exercise) {
-  return showModalBottomSheet<Exercise>(
+  return showDialog<Exercise>(
     context: context,
-    isScrollControlled: true,
-    showDragHandle: true,
-    builder: (ctx) => Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
-      child: _ExerciseEditSheet(exercise: exercise),
+    builder: (ctx) => Dialog(
+      clipBehavior: Clip.antiAlias,
+      child: _ExerciseEditForm(exercise: exercise),
     ),
   );
 }
 
-class _ExerciseEditSheet extends StatefulWidget {
+class _ExerciseEditForm extends StatefulWidget {
   final Exercise exercise;
-  const _ExerciseEditSheet({required this.exercise});
+  const _ExerciseEditForm({required this.exercise});
 
   @override
-  State<_ExerciseEditSheet> createState() => _ExerciseEditSheetState();
+  State<_ExerciseEditForm> createState() => _ExerciseEditFormState();
 }
 
-class _ExerciseEditSheetState extends State<_ExerciseEditSheet> {
+class _ExerciseEditFormState extends State<_ExerciseEditForm> {
   late final TextEditingController _name;
   late final TextEditingController _sets;
   late final TextEditingController _reps;
@@ -230,75 +229,117 @@ class _ExerciseEditSheetState extends State<_ExerciseEditSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final current = _currentSection;
-    return SafeArea(
-      top: false,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 560),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Egzersizi düzenle',
-                  style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _name,
-                autofocus: widget.exercise.name.trim().isEmpty,
-                decoration: const InputDecoration(
-                    labelText: 'Egzersiz', border: OutlineInputBorder()),
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: 12),
-              Row(
+    final accent = sectionColor(current);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 520, maxHeight: 640),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header bar, tinted by the current section.
+          Container(
+            color: accent.withValues(alpha: 0.12),
+            padding: const EdgeInsets.fromLTRB(20, 14, 8, 14),
+            child: Row(
+              children: [
+                Icon(Icons.fitness_center, size: 20, color: accent),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text('Egzersizi düzenle',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700)),
+                ),
+                IconButton(
+                  tooltip: 'Kapat',
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: _field(_sets, 'Set')),
-                  const SizedBox(width: 10),
-                  Expanded(child: _field(_reps, 'Tekrar')),
+                  TextField(
+                    controller: _name,
+                    autofocus: widget.exercise.name.trim().isEmpty,
+                    decoration: const InputDecoration(
+                        labelText: 'Egzersiz', border: OutlineInputBorder()),
+                    textInputAction: TextInputAction.next,
+                    onSubmitted: (_) => _save(),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _field(_sets, 'Set')),
+                      const SizedBox(width: 10),
+                      Expanded(child: _field(_reps, 'Tekrar')),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _field(_weight, 'Ağırlık')),
+                      const SizedBox(width: 10),
+                      Expanded(child: _field(_rest, 'Dinlenme')),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Bölüm (vücut bölgesi)',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurfaceVariant)),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: [
+                      for (final s in sectionColors.keys)
+                        ChoiceChip(
+                          label: Text(s),
+                          selected: current == s,
+                          visualDensity: VisualDensity.compact,
+                          selectedColor:
+                              sectionColor(s).withValues(alpha: 0.18),
+                          onSelected: (_) => _setSection(s),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _field(_note, 'Bölüm / Not (serbest)'),
                 ],
               ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(child: _field(_weight, 'Ağırlık')),
-                  const SizedBox(width: 10),
-                  Expanded(child: _field(_rest, 'Dinlenme')),
-                ],
-              ),
-              const SizedBox(height: 16),
-              const Text('Bölüm (vücut bölgesi)',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: [
-                  for (final s in sectionColors.keys)
-                    ChoiceChip(
-                      label: Text(s),
-                      selected: current == s,
-                      visualDensity: VisualDensity.compact,
-                      selectedColor: sectionColor(s).withValues(alpha: 0.18),
-                      onSelected: (_) => _setSection(s),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              _field(_note, 'Bölüm / Not (serbest)'),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: FilledButton.icon(
+            ),
+          ),
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Vazgeç'),
+                ),
+                const SizedBox(width: 8),
+                FilledButton.icon(
                   onPressed: _save,
                   icon: const Icon(Icons.check, size: 18),
                   label: const Text('Tamam'),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
