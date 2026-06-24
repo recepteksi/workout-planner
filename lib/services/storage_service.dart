@@ -33,6 +33,7 @@ class StorageService {
     }
     await service._migrateAbsToOwnProgram();
     await service._seedV2Programs();
+    await service._seedV3Programs();
     return service;
   }
 
@@ -106,6 +107,31 @@ class StorageService {
       // Best-effort; ignore if the asset is missing/invalid.
     }
     await _metaBox.put('v2ProgramsSeeded', 'true');
+  }
+
+  /// One-time injection of the chest-sparing programs ("Göğüs Dinlendirme").
+  /// Adds any program whose name isn't already present, so existing users get
+  /// them without losing their old programs.
+  Future<void> _seedV3Programs() async {
+    if (_metaBox.get('v3ProgramsSeeded') == 'true') return;
+    try {
+      final raw = await rootBundle.loadString('assets/seed_programs_v3.json');
+      final incoming = (jsonDecode(raw) as List)
+          .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      final existing = loadPrograms();
+      final existingNames =
+          existing.map((p) => p.name.trim().toLowerCase()).toSet();
+      final toAdd = incoming
+          .where((p) => !existingNames.contains(p.name.trim().toLowerCase()))
+          .toList();
+      if (toAdd.isNotEmpty) {
+        await savePrograms([...existing, ...toAdd]);
+      }
+    } catch (_) {
+      // Best-effort; ignore if the asset is missing/invalid.
+    }
+    await _metaBox.put('v3ProgramsSeeded', 'true');
   }
 
   Future<void> _seedFromAsset() async {
