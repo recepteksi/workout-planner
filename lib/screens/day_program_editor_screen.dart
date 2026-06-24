@@ -5,8 +5,8 @@ import '../models/day_program.dart';
 import '../models/exercise.dart';
 import '../models/exercise_template.dart';
 import '../providers/app_providers.dart';
+import '../widgets/exercise_grid_card.dart';
 import '../widgets/exercise_library_panel.dart';
-import '../widgets/exercise_row.dart';
 import '../widgets/page_container.dart';
 
 /// Daily program create/edit screen.
@@ -48,12 +48,34 @@ class _DayProgramEditorScreenState
     super.dispose();
   }
 
-  void _addBlank() {
+  Future<void> _addBlank() async {
     setState(() => _exercises.add(Exercise(name: '')));
+    final index = _exercises.length - 1;
+    await _editAt(index);
+    // Drop the card again if the user dismissed it without naming it.
+    if (index < _exercises.length &&
+        _exercises[index].name.trim().isEmpty) {
+      setState(() => _exercises.removeAt(index));
+    }
   }
 
   void _addTemplate(ExerciseTemplate t) {
     setState(() => _exercises.add(t.toExercise()));
+  }
+
+  Future<void> _editAt(int index) async {
+    final updated = await showExerciseEditSheet(context, _exercises[index]);
+    if (updated != null && index < _exercises.length) {
+      setState(() => _exercises[index] = updated);
+    }
+  }
+
+  void _moveExercise(int from, int to) {
+    if (from == to) return;
+    setState(() {
+      final item = _exercises.removeAt(from);
+      _exercises.insert(from < to ? to - 1 : to, item);
+    });
   }
 
   void _openLibrarySheet() {
@@ -197,24 +219,44 @@ class _DayProgramEditorScreenState
                 ? 'Soldaki kütüphaneden egzersiz kartlarını buraya sürükle.'
                 : 'Alttaki "Kütüphaneden Ekle" ile başla.',
           )
-        : ReorderableListView.builder(
+        : GridView.builder(
             padding: const EdgeInsets.fromLTRB(4, 4, 4, 96),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 240,
+              mainAxisExtent: 138,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
             itemCount: _exercises.length,
-            onReorder: (oldIndex, newIndex) {
-              setState(() {
-                if (newIndex > oldIndex) newIndex -= 1;
-                final item = _exercises.removeAt(oldIndex);
-                _exercises.insert(newIndex, item);
-              });
-            },
             itemBuilder: (context, index) {
               final ex = _exercises[index];
-              return ExerciseRow(
-                key: ValueKey(ex.id),
+              final card = ExerciseGridCard(
                 index: index,
                 exercise: ex,
-                onChanged: (updated) => _exercises[index] = updated,
+                onTap: () => _editAt(index),
                 onDelete: () => setState(() => _exercises.removeAt(index)),
+              );
+              // Drag a card onto another to reorder (long-press to start).
+              return DragTarget<int>(
+                onWillAcceptWithDetails: (d) => d.data != index,
+                onAcceptWithDetails: (d) => _moveExercise(d.data, index),
+                builder: (context, candidate, rejected) {
+                  final hovering = candidate.isNotEmpty;
+                  return LongPressDraggable<int>(
+                    key: ValueKey(ex.id),
+                    data: index,
+                    feedback: Material(
+                      color: Colors.transparent,
+                      child: SizedBox(width: 220, height: 138, child: card),
+                    ),
+                    childWhenDragging: Opacity(opacity: 0.3, child: card),
+                    child: AnimatedScale(
+                      scale: hovering ? 1.04 : 1.0,
+                      duration: const Duration(milliseconds: 120),
+                      child: card,
+                    ),
+                  );
+                },
               );
             },
           );
