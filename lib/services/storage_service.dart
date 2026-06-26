@@ -6,6 +6,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../models/day_program.dart';
 import '../models/exercise.dart';
 import '../models/weekly_plan.dart';
+import 'exercise_image_resolver.dart';
 
 /// Hive-based local storage. Uses IndexedDB on the web.
 /// Each record is stored as a JSON string keyed by its id.
@@ -18,6 +19,7 @@ class StorageService {
   late final Box<String> _programsBox;
   late final Box<String> _weeklyBox;
   late final Box<String> _metaBox;
+  late final ExerciseImageResolver _images;
 
   StorageService._();
 
@@ -27,6 +29,7 @@ class StorageService {
     service._programsBox = await Hive.openBox<String>(_programsBoxName);
     service._weeklyBox = await Hive.openBox<String>(_weeklyBoxName);
     service._metaBox = await Hive.openBox<String>(_metaBoxName);
+    service._images = await ExerciseImageResolver.load();
     // First run with no data: seed with the user's existing programs.
     if (service._programsBox.isEmpty) {
       await service._seedFromAsset();
@@ -34,7 +37,42 @@ class StorageService {
     await service._migrateAbsToOwnProgram();
     await service._seedV2Programs();
     await service._seedV3Programs();
+    // Backfill catalog illustrations onto any program exercises still missing
+    // one (the seed programs were authored without image URLs).
+    await service._backfillImages();
     return service;
+  }
+
+  /// Fills [Exercise.imageUrl] for every exercise that lacks one by matching its
+  /// name against the catalog. Returns the same programs when nothing changed,
+  /// preserving each program's [updatedAt] so list ordering is untouched.
+  List<DayProgram> _withImages(List<DayProgram> programs) {
+    return [
+      for (final p in programs)
+        p.copyWith(
+          updatedAt: p.updatedAt,
+          exercises: [
+            for (final e in p.exercises)
+              (e.imageUrl == null || e.imageUrl!.isEmpty)
+                  ? () {
+                      final url = _images.resolve(e.name);
+                      return url == null ? e : e.copyWith(imageUrl: url);
+                    }()
+                  : e,
+          ],
+        ),
+    ];
+  }
+
+  /// One-time backfill of illustrations onto already-stored programs (existing
+  /// installs whose programs were seeded before images were carried over).
+  Future<void> _backfillImages() async {
+    if (_metaBox.get('imagesBackfilled') == 'true') return;
+    final programs = loadPrograms();
+    if (programs.isNotEmpty) {
+      await savePrograms(_withImages(programs));
+    }
+    await _metaBox.put('imagesBackfilled', 'true');
   }
 
   /// One-time migration: pull the repeated "Karın" exercises out of every
@@ -101,7 +139,7 @@ class StorageService {
           .where((p) => !existingNames.contains(p.name.trim().toLowerCase()))
           .toList();
       if (toAdd.isNotEmpty) {
-        await savePrograms([...existing, ...toAdd]);
+        await savePrograms([...existing, ..._withImages(toAdd)]);
       }
     } catch (_) {
       // Best-effort; ignore if the asset is missing/invalid.
@@ -126,7 +164,7 @@ class StorageService {
           .where((p) => !existingNames.contains(p.name.trim().toLowerCase()))
           .toList();
       if (toAdd.isNotEmpty) {
-        await savePrograms([...existing, ...toAdd]);
+        await savePrograms([...existing, ..._withImages(toAdd)]);
       }
     } catch (_) {
       // Best-effort; ignore if the asset is missing/invalid.
@@ -140,7 +178,7 @@ class StorageService {
       final list = (jsonDecode(raw) as List)
           .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList();
-      if (list.isNotEmpty) await savePrograms(list);
+      if (list.isNotEmpty) await savePrograms(_withImages(list));
     } catch (_) {
       // Seeding is best-effort; ignore if the asset is missing/invalid.
     }
