@@ -1,0 +1,323 @@
+[
+  {
+    "name": "Sırt & Çekiş (Göğüs Dinlendirme)",
+    "exercises": [
+      {
+        "name": "Band pull-apart",
+        "sets": "2",
+        "reps": "20",
+        "note": "Isınma · skapula",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Band_Pull_Apart/0.jpg"
+      },
+      {
+        "name": "Cat-cow / T-spine rotation",
+        "sets": "1",
+        "reps": "10",
+        "note": "Isınma",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cat_Stretch/0.jpg"
+      },
+      {
+        "name": "Hafif bisiklet / yürüyüş",
+        "reps": "5 dk",
+        "note": "Isınma",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bicycling_Stationary/0.jpg"
+      },
+      {
+        "name": "Lat pulldown veya barfiks",
+        "sets": "4",
+        "reps": "8-12",
+        "rest": "90 sn",
+        "note": "Direnç · sırt genişlik · progresif",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Wide-Grip_Lat_Pulldown/0.jpg"
+      },
+      {
+        "name": "Barbell / dumbbell row",
+        "sets": "4",
+        "reps": "8-12",
+        "rest": "90 sn",
+        "note": "Direnç · sırt kalınlık · progresif",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bent_Over_Barbell_Row/0.jpg"
+      },
+      {
+        "name": "Seated cable row",
+        "sets": "3",
+        "reps": "10-12",
+        "rest": "75 sn",
+        "note": "Direnç · orta sırt",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Seated_Cable_Rows/0.jpg"
+      },
+      {
+        "name": "Single-arm dumbbell row",
+        "sets": "3",
+        "reps": "10-12",
+        "note": "Direnç · tek kol",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/One-Arm_Dumbbell_Row/0.jpg"
+      },
+      {
+        "name": "Face pull",
+        "sets": "3",
+        "reps": "15",
+        "note": "Direnç · arka omuz · omuz sağlığı",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Face_Pull/0.jpg"
+      },
+      {
+        "name": "Reverse pec deck / rear delt fly",
+        "sets": "3",
+        "reps": "15",
+        "note": "Direnç · arka omuz",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Reverse_Machine_Flyes/0.jpg"
+      },
+      {
+        "name": "Barbell / dumbbell biceps curl",
+        "sets": "3",
+        "reps": "10-12",
+        "note": "Direnç · biceps",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Curl/0.jpg"
+      },
+      {
+        "name": "Hammer curl",
+        "sets": "3",
+        "reps": "12",
+        "note": "Direnç · biceps · ön kol",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hammer_Curls/0.jpg"
+      },
+      {
+        "name": "Bisiklet veya tempolu yürüyüş",
+        "reps": "10-15 dk",
+        "note": "Kardiyo · düşük tempo",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bicycling_Stationary/0.jpg"
+      },
+      {
+        "name": "Lat / sırt stretch",
+        "reps": "30-45 sn",
+        "note": "Esneme",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Lateral_Stretch/0.jpg"
+      },
+      {
+        "name": "Biceps & ön kol stretch",
+        "reps": "30-45 sn",
+        "note": "Esneme",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Kneeling_Forearm_Stretch/0.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Bacak & Karın (Göğüs Dinlendirme)",
+    "exercises": [
+      {
+        "name": "Bodyweight squat",
+        "sets": "2",
+        "reps": "15",
+        "note": "Isınma",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bodyweight_Squat/0.jpg"
+      },
+      {
+        "name": "Leg swings (ön-arka / yan)",
+        "sets": "2",
+        "reps": "12",
+        "note": "Isınma · kalça"
+      },
+      {
+        "name": "Glute bridge",
+        "sets": "2",
+        "reps": "15",
+        "note": "Isınma · kalça aktivasyon",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Butt_Lift_Bridge/0.jpg"
+      },
+      {
+        "name": "Squat (barbell / goblet)",
+        "sets": "4",
+        "reps": "8-12",
+        "rest": "120 sn",
+        "note": "Direnç · bileşik · progresif",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Squat/0.jpg"
+      },
+      {
+        "name": "Romanian deadlift",
+        "sets": "4",
+        "reps": "8-10",
+        "rest": "120 sn",
+        "note": "Direnç · arka zincir · progresif",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Romanian_Deadlift/0.jpg"
+      },
+      {
+        "name": "Leg press",
+        "sets": "3",
+        "reps": "12-15",
+        "rest": "90 sn",
+        "note": "Direnç · quadriceps",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leg_Press/0.jpg"
+      },
+      {
+        "name": "Leg curl",
+        "sets": "3",
+        "reps": "12",
+        "note": "Direnç · hamstring",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Lying_Leg_Curls/0.jpg"
+      },
+      {
+        "name": "Leg extension",
+        "sets": "3",
+        "reps": "15",
+        "note": "Direnç · quadriceps",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leg_Extensions/0.jpg"
+      },
+      {
+        "name": "Calf raise",
+        "sets": "4",
+        "reps": "15-20",
+        "note": "Direnç · baldır",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Rocking_Standing_Calf_Raise/0.jpg"
+      },
+      {
+        "name": "Hanging leg raise",
+        "sets": "3",
+        "reps": "12-15",
+        "rest": "60 sn",
+        "note": "Core · alt karın",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hanging_Leg_Raise/0.jpg"
+      },
+      {
+        "name": "Cable crunch",
+        "sets": "3",
+        "reps": "12-15",
+        "note": "Core · ağırlıklı",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cable_Crunch/0.jpg"
+      },
+      {
+        "name": "Pallof press (sağ + sol)",
+        "sets": "3",
+        "reps": "12",
+        "note": "Core · anti-rotasyon · superset",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Pallof_Press/0.jpg"
+      },
+      {
+        "name": "Plank",
+        "sets": "3",
+        "reps": "30-45 sn",
+        "note": "Core",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Plank/0.jpg"
+      },
+      {
+        "name": "Bisiklet veya yürüyüş",
+        "reps": "10-15 dk",
+        "note": "Kardiyo · düşük tempo",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bicycling_Stationary/0.jpg"
+      },
+      {
+        "name": "Hamstring stretch",
+        "reps": "30-45 sn",
+        "note": "Esneme",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hamstring_Stretch/0.jpg"
+      },
+      {
+        "name": "Quad & hip flexor stretch",
+        "reps": "30-45 sn",
+        "note": "Esneme",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Intermediate_Hip_Flexor_and_Quad_Stretch/0.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Çekiş 2 & Kol & Arka Omuz (Göğüs Dinlendirme)",
+    "exercises": [
+      {
+        "name": "Band pull-apart",
+        "sets": "2",
+        "reps": "20",
+        "note": "Isınma · skapula",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Band_Pull_Apart/0.jpg"
+      },
+      {
+        "name": "Scapular pull-up / hang",
+        "sets": "2",
+        "reps": "10",
+        "note": "Isınma · sırt",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Scapular_Pull-Up/0.jpg"
+      },
+      {
+        "name": "Barfiks / assisted pull-up",
+        "sets": "4",
+        "reps": "6-10",
+        "rest": "90 sn",
+        "note": "Direnç · sırt · progresif",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Band_Assisted_Pull-Up/0.jpg"
+      },
+      {
+        "name": "Chest-supported (göğüs destekli) row",
+        "sets": "4",
+        "reps": "10-12",
+        "rest": "90 sn",
+        "note": "Direnç · göğse baskı yok",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Lying_T-Bar_Row/0.jpg"
+      },
+      {
+        "name": "Close-grip lat pulldown",
+        "sets": "3",
+        "reps": "10-12",
+        "note": "Direnç · sırt",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Close-Grip_Front_Lat_Pulldown/0.jpg"
+      },
+      {
+        "name": "Shrug (trapez)",
+        "sets": "3",
+        "reps": "12-15",
+        "note": "Direnç · trapez",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Shrug/0.jpg"
+      },
+      {
+        "name": "Lateral raise (yan omuz)",
+        "sets": "3",
+        "reps": "15",
+        "note": "Direnç · yan omuz",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Side_Lateral_Raise/0.jpg"
+      },
+      {
+        "name": "Reverse pec deck / rear delt fly",
+        "sets": "3",
+        "reps": "15",
+        "note": "Direnç · arka omuz",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Reverse_Machine_Flyes/0.jpg"
+      },
+      {
+        "name": "EZ-bar curl",
+        "sets": "3",
+        "reps": "10",
+        "note": "Direnç · biceps",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Curl/0.jpg"
+      },
+      {
+        "name": "Rope hammer curl",
+        "sets": "3",
+        "reps": "12",
+        "note": "Direnç · biceps · ön kol",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cable_Hammer_Curls_-_Rope_Attachment/0.jpg"
+      },
+      {
+        "name": "Wrist / forearm curl",
+        "sets": "3",
+        "reps": "15",
+        "note": "Direnç · ön kol",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cable_Wrist_Curl/0.jpg"
+      },
+      {
+        "name": "Bisiklet / yürüyüş (opsiyonel HIIT yok)",
+        "reps": "10 dk",
+        "note": "Kardiyo · düşük tempo",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Bicycling_Stationary/0.jpg"
+      },
+      {
+        "name": "Sırt & omuz stretch",
+        "reps": "30-45 sn",
+        "note": "Esneme",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Lateral_Stretch/0.jpg"
+      },
+      {
+        "name": "Biceps & ön kol stretch",
+        "reps": "30-45 sn",
+        "note": "Esneme",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Kneeling_Forearm_Stretch/0.jpg"
+      }
+    ]
+  }
+]

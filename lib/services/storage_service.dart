@@ -40,6 +40,9 @@ class StorageService {
     // Backfill catalog illustrations onto any program exercises still missing
     // one (the seed programs were authored without image URLs).
     await service._backfillImages();
+    // One-time reset: replace every program with the 3 newest programs, this
+    // time with an illustration baked onto each exercise.
+    await service._resetToV4Programs();
     return service;
   }
 
@@ -170,6 +173,30 @@ class StorageService {
       // Best-effort; ignore if the asset is missing/invalid.
     }
     await _metaBox.put('v3ProgramsSeeded', 'true');
+  }
+
+  /// One-time reset to the 3 newest programs ("Göğüs Dinlendirme" set), this
+  /// time with an illustration baked onto every exercise in the seed JSON.
+  /// Replaces ALL existing programs (the older ones were authored without
+  /// images), per the user's request to recreate the last 3 with pictures and
+  /// drop the rest. Guarded by a meta flag so a program created after the reset
+  /// is never wiped on a later launch.
+  Future<void> _resetToV4Programs() async {
+    if (_metaBox.get('v4ResetDone') == 'true') return;
+    try {
+      final raw = await rootBundle.loadString('assets/seed_programs_v4.json');
+      final incoming = (jsonDecode(raw) as List)
+          .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      if (incoming.isNotEmpty) {
+        // Images are already embedded in the seed; _withImages only fills any
+        // exercise the catalog still has no match for (e.g. "Leg swings").
+        await savePrograms(_withImages(incoming));
+      }
+    } catch (_) {
+      // Best-effort; ignore if the asset is missing/invalid.
+    }
+    await _metaBox.put('v4ResetDone', 'true');
   }
 
   Future<void> _seedFromAsset() async {

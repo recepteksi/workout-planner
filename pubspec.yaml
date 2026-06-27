@@ -73,6 +73,7 @@ flutter:
     - assets/seed_programs.json
     - assets/seed_programs_v2.json
     - assets/seed_programs_v3.json
+    - assets/seed_programs_v4.json
     - assets/exercise_library.json
     - assets/fonts/NotoSans-Regular.ttf
     - assets/fonts/NotoSans-Bold.ttf
