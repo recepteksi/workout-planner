@@ -1,0 +1,161 @@
+[
+  {
+    "name": "2. Gün – Karın & Çekiş (Sırt & Biceps)",
+    "exercises": [
+      {
+        "name": "Lying Leg Raises",
+        "sets": "2 tur",
+        "reps": "50 sn",
+        "rest": "20 sn",
+        "note": "Karın · alt karın",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg"
+      },
+      {
+        "name": "Russian Twist",
+        "sets": "2 tur",
+        "reps": "50 sn",
+        "rest": "20 sn",
+        "note": "Karın · yan karın / rotasyon gücü",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Russian_Twist/0.jpg"
+      },
+      {
+        "name": "Bicycle Crunch",
+        "sets": "2 tur",
+        "reps": "50 sn",
+        "rest": "20 sn",
+        "note": "Karın · tüm karın / koordinasyon",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Air_Bike/0.jpg"
+      },
+      {
+        "name": "Wide Grip Barfix (veya Lat Pulldown)",
+        "sets": "3",
+        "reps": "Maksimum",
+        "rest": "2 dk",
+        "note": "Direnç · geniş sırt (latissimus dorsi) · progresif",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Wide-Grip_Lat_Pulldown/0.jpg"
+      },
+      {
+        "name": "Iso-Lateral Row Machine (Geniş Tutuş)",
+        "sets": "4",
+        "reps": "10-12",
+        "rest": "1.5 dk",
+        "note": "Direnç · üst sırt / rhomboids / trapezius",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leverage_Iso_Row/0.jpg"
+      },
+      {
+        "name": "Long Handle Lat Pullover",
+        "sets": "3",
+        "reps": "12-15",
+        "rest": "1 dk",
+        "note": "Direnç · kanat kasları (lats) izolasyonu",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Straight-Arm_Dumbbell_Pullover/0.jpg"
+      },
+      {
+        "name": "Cable Y Raise",
+        "sets": "3",
+        "reps": "15",
+        "rest": "1 dk",
+        "note": "Direnç · arka omuz (posterior deltoid)",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Cable_Rear_Delt_Fly/0.jpg"
+      },
+      {
+        "name": "Ez Bar Curl",
+        "sets": "3",
+        "reps": "10-12",
+        "rest": "1.5 dk",
+        "note": "Direnç · ön kol (biceps brachii)",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/EZ-Bar_Curl/0.jpg"
+      },
+      {
+        "name": "Dumbbell Alternating Hammer Curl",
+        "sets": "3",
+        "reps": "12",
+        "rest": "1 dk",
+        "note": "Direnç · brachioradialis / ön kol kalınlığı",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Alternate_Hammer_Curl/0.jpg"
+      },
+      {
+        "name": "Rowing (Kürek)",
+        "sets": "1",
+        "reps": "3000-4000 m",
+        "note": "Kardiyo · tüm vücut / kontrollü tempo",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Rowing_Stationary/0.jpg"
+      }
+    ]
+  },
+  {
+    "name": "3. Gün – Karın & Bacak (Alt Vücut & Hipertrofi)",
+    "exercises": [
+      {
+        "name": "Bird Dog",
+        "sets": "2 tur",
+        "reps": "50 sn",
+        "rest": "20 sn",
+        "note": "Karın · bel sağlığı / core aktivasyonu"
+      },
+      {
+        "name": "Leg Scissors (Makas)",
+        "sets": "2 tur",
+        "reps": "50 sn",
+        "rest": "20 sn",
+        "note": "Karın · alt karın / hip flexors",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Scissor_Kick/0.jpg"
+      },
+      {
+        "name": "Crunch",
+        "sets": "2 tur",
+        "reps": "50 sn",
+        "rest": "20 sn",
+        "note": "Karın · üst karın (rectus abdominis)",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Crunches/0.jpg"
+      },
+      {
+        "name": "Back Squat",
+        "sets": "2+3",
+        "reps": "8-12",
+        "rest": "2-3 dk",
+        "note": "Direnç · ön bacak (quad) / kalça (glute)",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Squat/0.jpg"
+      },
+      {
+        "name": "Conventional Deadlift",
+        "sets": "3",
+        "reps": "8",
+        "rest": "2-3 dk",
+        "note": "Direnç · arka bacak (hamstring) / kalça / erector spinae",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Barbell_Deadlift/0.jpg"
+      },
+      {
+        "name": "Split Squat veya Back Lunge",
+        "sets": "3",
+        "reps": "12 (bacak başına)",
+        "rest": "1-2 dk",
+        "note": "Direnç · tek bacak stabilitesi / quad & glute",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Split_Squats/0.jpg"
+      },
+      {
+        "name": "Seated Leg Extension",
+        "sets": "3",
+        "reps": "15",
+        "rest": "1 dk",
+        "note": "Direnç · ön bacak izolasyonu (quadriceps)",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Leg_Extensions/0.jpg"
+      },
+      {
+        "name": "Standing Calf Raise",
+        "sets": "4",
+        "reps": "15-20",
+        "rest": "1 dk",
+        "note": "Direnç · kalf kasları (gastrocnemius)",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Standing_Calf_Raises/0.jpg"
+      },
+      {
+        "name": "Hamstring & Quad & Glute Stretch",
+        "sets": "1",
+        "reps": "Her bölge 30-45 sn",
+        "note": "Esneme · alt vücut kas grubu",
+        "imageUrl": "https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/Hamstring_Stretch/0.jpg"
+      }
+    ]
+  }
+]

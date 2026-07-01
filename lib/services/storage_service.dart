@@ -46,6 +46,9 @@ class StorageService {
     // One-time reset: drop all programs and install the single "1. Gün" program
     // the user provided.
     await service._resetToV5Programs();
+    // One-time additive seed: add the "2. Gün" and "3. Gün" programs alongside
+    // whatever already exists (keeps "1. Gün" and any user-made programs).
+    await service._seedV6Programs();
     return service;
   }
 
@@ -221,6 +224,31 @@ class StorageService {
       // Best-effort; ignore if the asset is missing/invalid.
     }
     await _metaBox.put('v5ResetDone', 'true');
+  }
+
+  /// One-time additive seed of the "2. Gün" and "3. Gün" programs. Adds any
+  /// program whose name isn't already present, so existing users keep their
+  /// "1. Gün" and any self-made programs while gaining the two new ones.
+  Future<void> _seedV6Programs() async {
+    if (_metaBox.get('v6ProgramsSeeded') == 'true') return;
+    try {
+      final raw = await rootBundle.loadString('assets/seed_programs_v6.json');
+      final incoming = (jsonDecode(raw) as List)
+          .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      final existing = loadPrograms();
+      final existingNames =
+          existing.map((p) => p.name.trim().toLowerCase()).toSet();
+      final toAdd = incoming
+          .where((p) => !existingNames.contains(p.name.trim().toLowerCase()))
+          .toList();
+      if (toAdd.isNotEmpty) {
+        await savePrograms([...existing, ..._withImages(toAdd)]);
+      }
+    } catch (_) {
+      // Best-effort; ignore if the asset is missing/invalid.
+    }
+    await _metaBox.put('v6ProgramsSeeded', 'true');
   }
 
   Future<void> _seedFromAsset() async {
