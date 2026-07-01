@@ -43,6 +43,9 @@ class StorageService {
     // One-time reset: replace every program with the 3 newest programs, this
     // time with an illustration baked onto each exercise.
     await service._resetToV4Programs();
+    // One-time reset: drop all programs and install the single "1. Gün" program
+    // the user provided.
+    await service._resetToV5Programs();
     return service;
   }
 
@@ -121,7 +124,6 @@ class StorageService {
       }
       await savePrograms(next);
     }
-
     await _metaBox.put('absSplitDone', 'true');
   }
 
@@ -197,6 +199,28 @@ class StorageService {
       // Best-effort; ignore if the asset is missing/invalid.
     }
     await _metaBox.put('v4ResetDone', 'true');
+  }
+
+  /// One-time reset to the single program the user supplied ("1. Gün – Karın &
+  /// İtiş"). Replaces ALL existing programs, per the user's request to drop the
+  /// current ones and keep only this. Guarded by a meta flag so a program
+  /// created after the reset is never wiped on a later launch.
+  Future<void> _resetToV5Programs() async {
+    if (_metaBox.get('v5ResetDone') == 'true') return;
+    try {
+      final raw = await rootBundle.loadString('assets/seed_programs_v5.json');
+      final incoming = (jsonDecode(raw) as List)
+          .map((e) => DayProgram.fromJson(Map<String, dynamic>.from(e as Map)))
+          .toList();
+      if (incoming.isNotEmpty) {
+        // Images are embedded in the seed; _withImages only fills any exercise
+        // the catalog still has no match for (e.g. "Bird Dog").
+        await savePrograms(_withImages(incoming));
+      }
+    } catch (_) {
+      // Best-effort; ignore if the asset is missing/invalid.
+    }
+    await _metaBox.put('v5ResetDone', 'true');
   }
 
   Future<void> _seedFromAsset() async {

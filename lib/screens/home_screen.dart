@@ -112,8 +112,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final wide = constraints.maxWidth >= 900;
-          final library = _libraryPanel(programs);
-          final week = _weekPanel(plan, programs);
 
           if (wide) {
             return Padding(
@@ -121,20 +119,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(flex: 3, child: library),
+                  Expanded(flex: 3, child: _libraryPanel(programs)),
                   const SizedBox(width: 16),
-                  SizedBox(width: 420, child: week),
+                  SizedBox(width: 420, child: _weekPanel(plan, programs)),
                 ],
               ),
             );
           }
+          // On narrow screens the whole page scrolls as one; the panels size
+          // to their content so the inner grid/list don't fight the outer
+          // scroll view for gestures.
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
             child: Column(
               children: [
-                SizedBox(height: 420, child: library),
+                _libraryPanel(programs, shrink: true),
                 const SizedBox(height: 16),
-                SizedBox(height: 460, child: week),
+                _weekPanel(plan, programs, shrink: true),
               ],
             ),
           );
@@ -150,13 +151,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   // --- Library panel ---
 
-  Widget _libraryPanel(List<DayProgram> programs) {
+  Widget _libraryPanel(List<DayProgram> programs, {bool shrink = false}) {
     final scheme = Theme.of(context).colorScheme;
     final active = programs.where((p) => !p.archived).toList();
     final archived = programs.where((p) => p.archived).toList();
     final visible = _showArchived ? archived : active;
 
     return _Panel(
+      shrink: shrink,
       title: 'Programlarım',
       icon: Icons.grid_view_rounded,
       trailing: archived.isEmpty
@@ -184,7 +186,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   : 'Sağ alttaki "Yeni Program" ile başla. Kartı haftaya sürükleyebilirsin.',
             )
           : GridView.builder(
-              padding: const EdgeInsets.only(bottom: 96, top: 4),
+              shrinkWrap: shrink,
+              physics:
+                  shrink ? const NeverScrollableScrollPhysics() : null,
+              padding: EdgeInsets.only(bottom: shrink ? 4 : 96, top: 4),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 320,
                 mainAxisExtent: 208,
@@ -199,6 +204,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onEdit: () => _push(DayProgramEditorScreen(program: p)),
                   onAddToWeek: () => _addToWeek(p.id),
                 );
+                // On touch/mobile use a long-press to start dragging so a
+                // vertical swipe scrolls the page instead of grabbing a card;
+                // on wide (mouse) screens an immediate drag feels better.
+                if (shrink) {
+                  return LongPressDraggable<String>(
+                    data: p.id,
+                    feedback: _dragFeedback(p, scheme),
+                    childWhenDragging: Opacity(opacity: 0.4, child: card),
+                    child: card,
+                  );
+                }
                 return Draggable<String>(
                   data: p.id,
                   feedback: _dragFeedback(p, scheme),
@@ -245,7 +261,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   // --- Week panel ---
 
-  Widget _weekPanel(WeeklyPlan? plan, List<DayProgram> programs) {
+  Widget _weekPanel(WeeklyPlan? plan, List<DayProgram> programs,
+      {bool shrink = false}) {
     final scheme = Theme.of(context).colorScheme;
     final byId = {for (final p in programs) p.id: p};
     final entries = plan?.entries ?? const <WeeklyEntry>[];
@@ -256,6 +273,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, candidate, rejected) {
         final hovering = candidate.isNotEmpty;
         return _Panel(
+          shrink: shrink,
           title: 'Haftalık Plan',
           icon: Icons.calendar_view_week,
           highlight: hovering,
@@ -304,6 +322,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ? _dropHint(hovering, scheme)
               : ReorderableListView.builder(
                   buildDefaultDragHandles: false,
+                  shrinkWrap: shrink,
+                  physics:
+                      shrink ? const NeverScrollableScrollPhysics() : null,
                   padding: const EdgeInsets.only(bottom: 8, top: 4),
                   itemCount: entries.length,
                   onReorder: _reorderWeek,
@@ -428,6 +449,7 @@ class _Panel extends StatelessWidget {
   final Widget child;
   final Widget? trailing;
   final bool highlight;
+  final bool shrink;
 
   const _Panel({
     required this.title,
@@ -435,6 +457,7 @@ class _Panel extends StatelessWidget {
     required this.child,
     this.trailing,
     this.highlight = false,
+    this.shrink = false,
   });
 
   @override
@@ -451,6 +474,7 @@ class _Panel extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: shrink ? MainAxisSize.min : MainAxisSize.max,
         children: [
           Row(
             children: [
@@ -464,7 +488,7 @@ class _Panel extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Expanded(child: child),
+          shrink ? child : Expanded(child: child),
         ],
       ),
     );
